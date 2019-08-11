@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <script src="login.controller.js"></script>
+        <script src="../../lms/authentication.service.js"></script>
+        <script src="../../lms/um.service.js"></script>
+        <script src="../../lms/encryption.helper.js"></script>
+        <script src="../../lms/user.js"></script>
+        <script src="../../lms/lms.js"></script>
+    </head>
+    <body onload="window.lms = new LMS();">
+        <form>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <input type="button" value="Login" onclick="login()">
+        </form>
+    </body>
+</html>
