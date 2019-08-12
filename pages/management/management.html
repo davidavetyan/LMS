@@ -13,7 +13,7 @@
         <script src="../../lms/book.js"></script>
         <script src="management.controller.js"></script>
     </head>
-    <body onload="displayContents();if(window.lms == undefined) window.lms = new LMS();" style="box-sizing: border-box">
+    <body onload="displayContents();loadLMS();" onbeforeunload="unloadLMS()" style="box-sizing: border-box">
         <form id="managementForm">
             <fieldset>
                 <legend>Book Management:</legend>

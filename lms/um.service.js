@@ -3,7 +3,7 @@ class UserManagement {
         this.users = [];
         this.passwords = [];
         
-        this.users.push(new User('admin','admin','','','','employee'));
+        this.users.push(new User('admin','admin','','','','admin'));
         this.passwords.push('admin12');
     }
 

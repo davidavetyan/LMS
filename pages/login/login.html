@@ -8,12 +8,15 @@
         <script src="../../lms/encryption.helper.js"></script>
         <script src="../../lms/user.js"></script>
         <script src="../../lms/lms.js"></script>
+        <script src="../../lms/book.js"></script>
+        <script src="../management/management.controller.js"></script>
     </head>
-    <body onload="if(window.lms == undefined) window.lms = new LMS();">
+    <body onload="loadLMS();" onbeforeunload="unloadLMS()">
         <form>
             <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Password">
             <input type="button" value="Login" onclick="login()">
         </form>
+        <span id="loginError" style="color:red;"></span>
     </body>
 </html>

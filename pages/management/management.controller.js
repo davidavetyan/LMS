@@ -1,6 +1,7 @@
 const Funcs = {
     showSearch(){
         if(window.optShow==false){
+            window.lms.showAll();
             document.getElementById('addOption').innerHTML = '<input style="margin-right: 5px" type="text" id="bookTitle" placeholder="Book\'s Title"><input style="margin-right: 5px" type="text" id="bookAuthor" placeholder="Book\'s Author"><input style="margin-right: 5px" type="text" id="bookDesc" placeholder="Book\'s Description"><input style="margin-right: 5px" type="button" onclick="Funcs.searchBook()" value="Search">';
             window.optShow = true;
         }else{
@@ -64,11 +65,10 @@ const Funcs = {
     },
 
     addBook() {
-        if(!(window.lms==undefined)) window.lms.addBook(document.getElementById('bookId').value,document.getElementById('bookTitle').value,document.getElementById('bookAuthor').value,document.getElementById('bookPageCount').value,document.getElementById('bookDescription').value);
+        if(window.lms!=undefined) window.lms.addBook(document.getElementById('bookId').value,document.getElementById('bookTitle').value,document.getElementById('bookAuthor').value,document.getElementById('bookPageCount').value,document.getElementById('bookDescription').value);
     },
 
     recommendBook() {
-
     },
 
     acceptHold() {
@@ -84,7 +84,13 @@ const Funcs = {
     },
 
     showAddUser(){
-
+        if(window.optShow==false){
+            document.getElementById('addOption').innerHTML = '<input style="margin-right: 5px" type="text" id="username" placeholder="Username"><input style="margin-right: 5px" type="text" id="userFirstName" placeholder="First Name"><input style="margin-right: 5px" type="text" id="userLastName" placeholder="Last Name"><input style="margin-right: 5px" type="text" id="userPhone" placeholder="Phone"><input style="margin-right: 5px" type="text" id="userEmail" placeholder="Email"><input style="margin-right: 5px" type="text" id="userRole" placeholder="Role"><input style="margin-right: 5px" type="button" onclick="Funcs.addUser()" value="Add User">';
+            window.optShow = true;
+        }else{
+            document.getElementById('addOption').innerHTML = '';
+            window.optShow = false;
+        }
     },
 
     showEditUser() {
@@ -107,9 +113,7 @@ function displayContents(){
         document.getElementById('logInfo').innerHTML = "You're logged in as "+ user.username + '<input style="margin-left:5px;" type="button" value="Log out" onclick="logout()"> ';
         //console.log(user);
         let permissions = PermissionService.getRoles()[user.role];
-        if(user.role!='employee'){
-            document.getElementById('usermanagement').style.display = 'none';
-        }
+        
         for(let key in permissions){
             if(permissions[key]==false){
                 if(document.getElementById(key)!=null) document.getElementById(key).style.display = 'none';
@@ -118,3 +122,30 @@ function displayContents(){
     }
 }
 
+function loadLMS(){
+    if(window.lms==null){
+        window.lms = new LMS();
+        if(sessionStorage.getItem('lms')!=null){
+            let lmsString = JSON.parse(sessionStorage.getItem('lms'));
+            let um = new UserManagement();
+            um.users = [];
+            um.passwords = [];
+            for(let i=0;i<lmsString.umService.users.length;i++){
+                um.users.push(new User(lmsString.umService.users[i].username,lmsString.umService.users[i].firstName,lmsString.umService.users[i].lastName,lmsString.umService.users[i].phone,lmsString.umService.users[i].email,lmsString.umService.users[i].role));
+                um.passwords.push(lmsString.umService.passwords[i]);
+            }
+            for(let i=0;i<lmsString.books.length;i++){
+                window.lms.books.push(new Book(lmsString.books[i].bookId,lmsString.books[i].title,lmsString.books[i].author,lmsString.books[i].pageCount,lmsString.books[i].description));
+                window.lms.takenBooks.push(lmsString.takenBooks[i]);
+            }
+            window.lms.umService = um;
+        } 
+    }
+    
+}
+
+function unloadLMS(){
+    if(window.lms!=null){
+        sessionStorage.setItem('lms',JSON.stringify(window.lms));
+    }
+}

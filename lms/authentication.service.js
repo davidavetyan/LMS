@@ -2,7 +2,7 @@ class AuthService {
     static login(username, password){
         let user = window.lms.getUmService().getUserByUsername(username);
         if(user==null){
-            console.log('Username or password is incorrect');
+            document.getElementById('loginError').innerHTML = 'Username or password is incorrect';
             return;
         } 
 
@@ -12,7 +12,7 @@ class AuthService {
             sessionStorage.setItem('authInfo', JSON.stringify(user));
             window.location = '../management/management.html';
         }else{
-            console.log('Username or password is incorrect');
+            document.getElementById('loginError').innerHTML = 'Username or password is incorrect';
         }
     }
 

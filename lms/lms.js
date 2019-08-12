@@ -7,7 +7,7 @@ class LMS {
 
     showAll(){
         for(let i=0;i<this.books.length;i++){
-            console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].bookId}\nAuthor: ${this.books[i].bookId}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\nStatus: ${this.takenBooks[i]}\n`);
+            console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\nAuthor: ${this.books[i].author}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\nStatus: ${this.takenBooks[i]}\n`);
         }
     }
 
@@ -26,6 +26,25 @@ class LMS {
         this.umService.passwords.push(EncryptionHelper.hash(password));
     }
 
+    editUser(username, firstName, lastName, phone, email){
+        for(let i=0;i<this.users.length;i++){
+            if(this.umService.users[i].username==username){
+                if(firstName!="") this.umService.users[i].firstName = firstName;
+                if(lastName!="") this.umService.users[i].lastName = lastName;
+                if(phone!="") this.umService.users[i].phone = phone;
+                if(email!="") this.umService.users[i].email = email;
+            }
+        }
+    }
+
+    changeUserPassword(username, password){
+        for(let i=0;i<this.users.length;i++){
+            if(this.umService.users[i].username==username){
+                this.umService.passwords[i] = EncryptionHelper.hash(password);
+            }
+        }
+    }
+
     removeUser(username) {
         for(let i=0;i< this.users.length;i++){
             if(this.users[i].username==username){
@@ -37,19 +56,13 @@ class LMS {
     searchBook(title,author,description){
         if(author==""){
             for(let i=0; i<this.books.length;i++){
-                if(this.books[i].title==title){
+                if(this.books[i].title.includes(title)){
                     if(this.takenBooks[i]==0){
-                        console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\n
-                        Author: ${this.books[i].author}\nDescription: ${this.books[i].description}\n
-                        Page Count: ${this.books[i].pageCount}\n`);
+                        console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\nAuthor: ${this.books[i].author}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\n`);
                     }else if(this.takenBooks[i]==1){
-                        console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\n
-                        Author: ${this.books[i].author}\nDescription: ${this.books[i].description}\n
-                        Page Count: ${this.books[i].pageCount}\nBook Placed on Hold\n`);
+                        console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\nAuthor: ${this.books[i].author}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\nBook Placed on Hold\n`);
                     }else{
-                        console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\n
-                        Author: ${this.books[i].author}\nDescription: ${this.books[i].description}\n
-                        Page Count: ${this.books[i].pageCount}\nBook taken by ${this.takenBooks[i]}\n`);
+                        console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\nAuthor: ${this.books[i].author}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\nBook taken by ${this.takenBooks[i]}\n`);
                     }
                     return;
                 }
@@ -57,7 +70,7 @@ class LMS {
             console.log(`Books with such parameters not found!`);
         }else if(description==""){
             for(let i=0; i<this.books.length;i++){
-                if(this.books[i].title==title && this.books[i].author==author){
+                if(this.books[i].title.includes(title) && this.books[i].author==author){
                     if(this.takenBooks[i]==0){
                         console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\n
                         Author: ${this.books[i].author}\nDescription: ${this.books[i].description}\n
@@ -77,7 +90,7 @@ class LMS {
             console.log(`Books with such parameters not found!`);
         }else{
             for(let i=0; i<this.books.length;i++){
-                if(this.books[i].title==title && this.books[i].author==author && this.books[i].description.includes(description)){
+                if(this.books[i].title.includes(title) && this.books[i].author==author && this.books[i].description.includes(description)){
                     if(this.takenBooks[i]==0){
                         console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\n
                         Author: ${this.books[i].author}\nDescription: ${this.books[i].description}\n
