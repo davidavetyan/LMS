@@ -26,21 +26,18 @@
                 <input type="button" id="acceptHold" onclick="Funcs.acceptHold()" value="Accept Hold"/>
                 <input type="button" id="acceptReturn" onclick="Funcs.acceptReturn()" value="Accept Return"/>
                 <input type="button" id="acceptRenew" onclick="Funcs.acceptRenew()" value="Accept Renewal"/>
+                <input type="button" onclick="Funcs.genRandomBooks()" value="Generate Random Books"/>
                 <br/>
                 <div id="addOption" style="margin-top: 10px;">
-                    <input type="text" id="bookTitle" placeholder="Book's Title">
-                    <input type="text" id="bookAuthor" placeholder="Book's Author">
-                    <input type="text" id="bookDesc" placeholder="Book's Description">
-                    <input type="button" onclick="Funcs.searchBook()" value="Search">
                 </div>
             </fieldset>
             <br>
             <fieldset id="usermanagement">
                 <legend>User Management:</legend>
                 <input type="text" placeholder="Username"/>
-                <input type="button" id="addUser" onclick="addUser()" value="Add User"/>
-                <input type="button" id="editUser" onclick="editUser()" value="Edit User"/>
-                <input type="button" id="removeUser" onclick="removeUser()" value="Remove User"/>
+                <input type="button" id="addUser" onclick="Funcs.showAddUser()" value="Add User"/>
+                <input type="button" id="editUser" onclick="Funcs.editUser()" value="Edit User"/>
+                <input type="button" id="removeUser" onclick="Funcs.removeUser()" value="Remove User"/>
             </fieldset>
             <br>
             <div id="logInfo"></div>

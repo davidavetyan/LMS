@@ -36,7 +36,7 @@ class PermissionService {
                 'returnBook': false,
                 'viewHistory': false,
                 'recommendBook': false,
-                'searchBook': false,
+                'searchBook': true,
                 'addBook': true,
                 'addUser': true,
                 'editUser': true,
