@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Management</title>
+        <link rel="stylesheet" href="management.css">
         <script src="../login/login.controller.js"></script>
         <script src="../../lms/authentication.service.js"></script>
         <script src="../../lms/um.service.js"></script>
@@ -11,28 +12,35 @@
         <script src="../../lms/lms.js"></script>
         <script src="management.controller.js"></script>
     </head>
-    <body onload="displayContents();showLogInfo();">
+    <body onload="displayContents();" style="box-sizing: border-box">
         <form>
             <fieldset>
                 <legend>Book Management:</legend>
-                <input type="text" placeholder="Book's ID">
-                <input type="button" id="issueBook" onclick="issueBook()" value="Place Hold">
-                <input type="button" id="renewBook" onclick="renewBook()" value="Renew Book">
-                <input type="button" id="viewHistory" onclick="viewHistory()" value="View History">
-                <input type="button" id="searchBook" onclick="searchBook()" value="Search Book">
-                <input type="button" id="addBook" onclick="addBook()" value="Add Book">
-                <input type="button" id="recommendBook" onclick="recommend()" value="Recommend">
-                <input type="button" id="acceptHold" onclick="acceptHold()" value="Accept Hold">
-                <input type="button" id="acceptReturn" onclick="acceptReturn()" value="Accept Return">
-                <input type="button" id="acceptRenew" onclick="acceptRenew()" value="Accept Renewal">
+                <input type="text" placeholder="Book's ID"/>
+                <input type="button" id="issueBook" onclick="Funcs.issueBook()" value="Place Hold"/>
+                <input type="button" id="renewBook" onclick="Funcs.renewBook()" value="Renew Book"/>
+                <input type="button" id="viewHistory" onclick="Funcs.viewHistory()" value="View History"/>
+                <input type="button" id="searchBook" onclick="Funcs.showSearch()" value="Search Book"/>
+                <input type="button" id="addBook" onclick="Funcs.addBook()" value="Add Book"/>
+                <input type="button" id="recommendBook" onclick="Funcs.recommend()" value="Recommend"/>
+                <input type="button" id="acceptHold" onclick="Funcs.acceptHold()" value="Accept Hold"/>
+                <input type="button" id="acceptReturn" onclick="Funcs.acceptReturn()" value="Accept Return"/>
+                <input type="button" id="acceptRenew" onclick="Funcs.acceptRenew()" value="Accept Renewal"/>
+                <br/>
+                <div id="addOption" style="margin-top: 10px;">
+                    <input type="text" id="bookTitle" placeholder="Book's Title">
+                    <input type="text" id="bookAuthor" placeholder="Book's Author">
+                    <input type="text" id="bookDesc" placeholder="Book's Description">
+                    <input type="button" onclick="Funcs.searchBook()" value="Search">
+                </div>
             </fieldset>
             <br>
             <fieldset id="usermanagement">
                 <legend>User Management:</legend>
-                <input type="text" placeholder="Username">
-                <input type="button" id="addUser" onclick="addUser()" value="Add User">
-                <input type="button" id="editUser" onclick="editUser()" value="Edit User">
-                <input type="button" id="removeUser" onclick="removeUser()" value="Remove User">
+                <input type="text" placeholder="Username"/>
+                <input type="button" id="addUser" onclick="addUser()" value="Add User"/>
+                <input type="button" id="editUser" onclick="editUser()" value="Edit User"/>
+                <input type="button" id="removeUser" onclick="removeUser()" value="Remove User"/>
             </fieldset>
             <br>
             <div id="logInfo"></div>
