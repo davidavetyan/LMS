@@ -9,7 +9,7 @@
         <script src="../../lms/user.js"></script>
         <script src="../../lms/lms.js"></script>
     </head>
-    <body onload="window.lms = new LMS();">
+    <body onload="if(window.lms == undefined) window.lms = new LMS();">
         <form>
             <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Password">

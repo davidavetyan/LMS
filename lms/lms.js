@@ -5,6 +5,12 @@ class LMS {
         this.takenBooks = []; //0-not taken, 1-placed, 2-taken
     }
 
+    showAll(){
+        for(let i=0;i<this.books.length;i++){
+            console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].bookId}\nAuthor: ${this.books[i].bookId}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\nStatus: ${this.takenBooks[i]}\n`);
+        }
+    }
+
     addBook(bookId, title, author, pageCount, description) {
         if(bookId=="" || title=="" || author=="" || pageCount==""){
             this.books.push(Book.generateRandomBook());

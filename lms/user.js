@@ -7,36 +7,4 @@ class User {
         this.email = email;
         this.role = role;
     }
-
-    issueBook() {
-        
-    }
-
-    renewBook() {
-
-    }
-
-    returnBook() {
-
-    }
-
-    viewHistory() {
-
-    }
-
-    recommendBook() {
-
-    }
-
-    searchBook() {
-
-    }
-
-    editUser(){
-
-    }
-
-    removeUser() {
-
-    }
 }
