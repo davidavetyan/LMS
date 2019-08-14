@@ -1,46 +1,111 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Management</title>
-        <link rel="stylesheet" href="management.css">
-        <script src="../login/login.controller.js"></script>
-        <script src="../../lms/authentication.service.js"></script>
-        <script src="../../lms/um.service.js"></script>
-        <script src="../../lms/permission.service.js"></script>
-        <script src="../../lms/encryption.helper.js"></script>
-        <script src="../../lms/user.js"></script>
-        <script src="../../lms/lms.js"></script>
-        <script src="../../lms/book.js"></script>
-        <script src="management.controller.js"></script>
-    </head>
-    <body onload="displayContents();loadLMS();" onbeforeunload="unloadLMS()" style="box-sizing: border-box">
-        <form id="managementForm">
-            <fieldset>
-                <legend>Book Management:</legend>
-                <input type="text" placeholder="Book's ID"/>
-                <input type="button" id="issueBook" onclick="Funcs.showIssueBook()" value="Place Hold"/>
-                <input type="button" id="renewBook" onclick="Funcs.renewBook()" value="Renew Book"/>
-                <input type="button" id="viewHistory" onclick="Funcs.viewHistory()" value="View History"/>
-                <input type="button" id="searchBook" onclick="Funcs.showSearch()" value="Search Book"/>
-                <input type="button" id="addBook" onclick="Funcs.showAddBook()" value="Add Book"/>
-                <input type="button" id="recommendBook" onclick="Funcs.recommend()" value="Recommend"/>
-                <input type="button" id="acceptHold" onclick="Funcs.acceptHold()" value="Accept Hold"/>
-                <input type="button" id="acceptReturn" onclick="Funcs.acceptReturn()" value="Accept Return"/>
-                <input type="button" id="acceptRenew" onclick="Funcs.acceptRenew()" value="Accept Renewal"/>
-                <input type="button" onclick="Funcs.genRandomBooks()" value="Generate Random Books"/>
-                <br/>
-                <div id="addOption" style="margin-top: 10px;">
-                </div>
-            </fieldset>
+
+<head>
+    <title>Management</title>
+    <link rel="stylesheet" href="management.css">
+    <script src="../login/login.controller.js"></script>
+    <script src="../../lms/authentication.service.js"></script>
+    <script src="../../lms/um.service.js"></script>
+    <script src="../../lms/permission.service.js"></script>
+    <script src="../../lms/encryption.helper.js"></script>
+    <script src="../../lms/user.js"></script>
+    <script src="../../lms/lms.js"></script>
+    <script src="../../lms/book.js"></script>
+    <script src="management.controller.js"></script>
+</head>
+
+<body class="body" onload="displayContents();loadLMS();" onbeforeunload="unloadLMS()" style="box-sizing: border-box">
+    <div id="logInfo" style="text-align: center;height: 50px;background-color: #0099CC;padding-top: 12px"></div>
+    <div id="container" style="text-align: center; margin-top: 10px">
+        <div style="text-align: center; width: 100%;">
             <br>
-            <fieldset id="usermanagement">
-                <legend>User Management:</legend>
-                <input type="text" placeholder="Username"/>
-                <input type="button" id="addUser" onclick="Funcs.showAddUser()" value="Add User"/>
-                <input type="button" id="editUser" onclick="Funcs.editUser()" value="Edit User"/>
-                <input type="button" id="removeUser" onclick="Funcs.removeUser()" value="Remove User"/>
-            </fieldset>
-        </form>
+            <div>
+                <h3 style="margin: 10px; text-align: center">Book Management</h3>
+                <hr style="width: 20%; color: black; margin-left: 40%">
+                <div style="display: flex; align-items: center; justify-content: center;flex-wrap:wrap;">
+                    <div style="display: flex; align-items: center; justify-content: center">
+                        <input class="button" type="button" id="issueBook" onclick="Funcs.issueBook()"
+                            value="Place Hold" />
+                        <input class="button" type="button" id="renewBook" onclick="Funcs.renewBook()"
+                            value="Renew Book" />
+                        <input class="button" type="button" id="viewHistory" onclick="Funcs.viewHistory()"
+                            value="View History" />
+                        <input class="button" type="button" id="searchBook" onclick="Funcs.showSearch()"
+                            value="Search Book" />
+                        <input class="button" type="button" id="addBook" onclick="Funcs.addBook()" value="Add Book" />
+                        <input class="button" type="button" id="recommendBook" onclick="Funcs.recommend()"
+                            value="Recommend" />
+                        <input class="button" type="button" id="acceptHold" onclick="Funcs.acceptHold()"
+                            value="Accept Hold" />
+                        <input class="button" type="button" id="acceptReturn" onclick="Funcs.acceptReturn()"
+                            value="Accept Return" />
+                        <input class="button" type="button" id="acceptRenew" onclick="Funcs.acceptRenew()"
+                            value="Accept Renewal" />
+                        <input class="button" type="button" onclick="Funcs.genRandomBooks()"
+                            value="Generate Random Books" />
+                        <input class="button" type="button" onclick="Funcs.showAllBooks()" value="Show Books" />
+                    </div>
+                    <div id="addOptionBook" style="display: flex;align-items: center;flex-wrap:wrap;">
+                    </div>
+                </div>
+            </div>
+
+            <br><br>
+            <div>
+                <h3 style="margin: 10px; text-align: center">User Management</h3>
+                <hr style="width: 20%; color: black; margin-left: 40%">
+                <div style="display: flex; align-items: center; justify-content: center;flex-wrap:wrap;">
+                    <div style="display: flex; align-items: center;width: 100%;justify-content: center">
+                        <input class="button-orange" type="button" id="addUser" onclick="Funcs.showAddUser()"
+                            value="Add User" />
+                        <input class="button-orange" type="button" id="editUser" onclick="Funcs.showEditUser()"
+                            value="Edit User" />
+                        <input class="button-orange" type="button" id="removeUser" onclick="Funcs.removeUser()"
+                            value="Remove User" />
+                    </div>
+
+                    <div id="addOptionUser" style="display: flex;align-items: center;flex-wrap:wrap;justify-content: center">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table id="table" style="margin-top: 20px;width:100%">
+            <thead></thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+
+    <!-- <form>
+        <fieldset>
+            <legend>Book Management:</legend>
+            <input type="text" placeholder="Book's ID" />
+            <input type="button" id="issueBook" onclick="Funcs.issueBook()" value="Place Hold" />
+            <input type="button" id="renewBook" onclick="Funcs.renewBook()" value="Renew Book" />
+            <input type="button" id="viewHistory" onclick="Funcs.viewHistory()" value="View History" />
+            <input type="button" id="searchBook" onclick="Funcs.showSearch()" value="Search Book" />
+            <input type="button" id="addBook" onclick="Funcs.addBook()" value="Add Book" />
+            <input type="button" id="recommendBook" onclick="Funcs.recommend()" value="Recommend" />
+            <input type="button" id="acceptHold" onclick="Funcs.acceptHold()" value="Accept Hold" />
+            <input type="button" id="acceptReturn" onclick="Funcs.acceptReturn()" value="Accept Return" />
+            <input type="button" id="acceptRenew" onclick="Funcs.acceptRenew()" value="Accept Renewal" />
+            <input type="button" onclick="Funcs.genRandomBooks()" value="Generate Random Books" />
+            <br />
+            <div id="addOption" style="margin-top: 10px;">
+            </div>
+        </fieldset>
+        <br>
+        <fieldset id="usermanagement">
+            <legend>User Management:</legend>
+            <input type="text" placeholder="Username" />
+            <input type="button" id="addUser" onclick="Funcs.showAddUser()" value="Add User" />
+            <input type="button" id="editUser" onclick="Funcs.editUser()" value="Edit User" />
+            <input type="button" id="removeUser" onclick="Funcs.removeUser()" value="Remove User" />
+        </fieldset>
+        <br>
         <div id="logInfo"></div>
-    </body>
+    </form> -->
+</body>
+
 </html>

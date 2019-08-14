@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Login</title>
-        <script src="login.controller.js"></script>
-        <script src="../../lms/authentication.service.js"></script>
-        <script src="../../lms/um.service.js"></script>
-        <script src="../../lms/encryption.helper.js"></script>
-        <script src="../../lms/user.js"></script>
-        <script src="../../lms/lms.js"></script>
-        <script src="../../lms/book.js"></script>
-        <script src="../management/management.controller.js"></script>
-    </head>
-    <body onload="loadLMS();" onbeforeunload="unloadLMS()">
-        <form>
-            <input type="text" id="username" placeholder="Username">
-            <input type="password" id="password" placeholder="Password">
-            <input type="button" value="Login" onclick="login()">
-        </form>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+    <script src="login.controller.js"></script>
+    <script src="../../lms/authentication.service.js"></script>
+    <script src="../../lms/um.service.js"></script>
+    <script src="../../lms/encryption.helper.js"></script>
+    <script src="../../lms/user.js"></script>
+    <script src="../../lms/lms.js"></script>
+    <script src="../../lms/book.js"></script>
+    <script src="../management/management.controller.js"></script>
+</head>
+
+<body class="body" onload="loadLMS();" onbeforeunload="unloadLMS()">
+    <header class="header">
+        <h1 style="padding: 15px">Library Management System</h1>
+    </header>
+    <form class="login_form">
+        <h1 style="color:white;margin-bottom: 15px">Login</h1>
+        <input type="text" class="form_field" id="username" placeholder="Username">
+        <input type="password" class="form_field" id="password" placeholder="Password">
+        <input class="login_button" type="button" value="Login" onclick="login()">
         <span id="loginError" style="color:red;"></span>
-    </body>
+        <div style="font-size: 16px;font-weight:500;">No Account? <a style="color: black;" href="../signup/signup.html">Sign up.</a></div>
+    </form>
+</body>
+
 </html>

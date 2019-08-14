@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="signup.css">
+    <script src="signup.controller.js"></script>
+    <script src="../../lms/authentication.service.js"></script>
+    <script src="../../lms/um.service.js"></script>
+    <script src="../../lms/encryption.helper.js"></script>
+    <script src="../../lms/user.js"></script>
+    <script src="../../lms/lms.js"></script>
+    <script src="../../lms/book.js"></script>
+    <script src="../management/management.controller.js"></script>
+</head>
+
+<body class="body" onload="loadLMS();" onbeforeunload="unloadLMS()">
+    <header class="header">
+        <h1 style="padding: 15px">Library Management System</h1>
+    </header>
+    <form class="login_form">
+        <h1 style="color:white;margin-bottom: 15px">Sign up</h1>
+        <input type="text" class="form_field" id="username" placeholder="Username">
+        <input type="text" class="form_field" id="userFirstName" placeholder="First Name">
+        <input type="text" class="form_field" id="userLastName" placeholder="Last Name">
+        <input type="text" class="form_field" id="userPhone" placeholder="Phone">
+        <input type="text" class="form_field" id="userEmail" placeholder="Email">
+        <input type="password" class="form_field" id="password" placeholder="Password">
+        <select id="role" name="role">
+            <option value="student">Student</option>
+            <option value="faculty">Faculty</option>
+            <option value="employee">Employee</option>
+        </select>
+        <input class="login_button" type="button" value="Sign Up" onclick="signup()">
+        <span id="loginError" style="color:red;"></span>
+        <div style="font-size: 16px;font-weight:500;margin-top:20px;">Already have an account? <a style="color: black;"
+                href="../login/login.html">Log in.</a></div>
+    </form>
+</body>
+
+</html>

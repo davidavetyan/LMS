@@ -19,8 +19,10 @@ class Book {
 
 function genRandomDesc() {
     let len = Math.floor(Math.random()*30)+25;
-    let alpha = "abcdefghijklmnopqrstuvwxyz";
+    let alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let name = "";
+    name+=alpha[Math.floor(Math.random()*26)];
+    alpha = "abcdefghijklmnopqrstuvwxyz, ";
     for(let i=0; i<len;i++){
         name += alpha[Math.floor(Math.random()*26)];
     }

@@ -5,29 +5,35 @@ class LMS {
         this.takenBooks = []; //0-not taken, 1-placed, 2-taken
     }
 
-    showAll(){
-        for(let i=0;i<this.books.length;i++){
-            console.log(`Book ID: ${this.books[i].bookId}\nTitle: ${this.books[i].title}\nAuthor: ${this.books[i].author}\nDescription: ${this.books[i].description}\nPage Count: ${this.books[i].pageCount}\nStatus: ${this.takenBooks[i]}\n`);
-        }
-    }
-
     addBook(bookId, title, author, pageCount, description) {
         if(bookId=="" || title=="" || author=="" || pageCount==""){
             this.books.push(Book.generateRandomBook());
             this.takenBooks.push(0);
         }else{
+            for(let i=0;i<this.books.length;i++){
+                if(this.books[i].bookId == bookId){
+                    return 'Book with such ID already exists!';
+                }
+            }
             this.books.push(new Book(bookId, title, author, pageCount ,description));
             this.takenBooks.push(0);
+            return '';
         }
     }
 
     addUser(username, firstName, lastName, phone, email, role, password){
+        for(let user of this.umService.users){
+            if(user.username == username){
+                return 'User with such username already exists!';
+            }
+        }
         this.umService.users.push(new User(username,firstName,lastName,phone,email,role));
         this.umService.passwords.push(EncryptionHelper.hash(password));
+        return '';
     }
 
     editUser(username, firstName, lastName, phone, email){
-        for(let i=0;i<this.users.length;i++){
+        for(let i=0;i<this.umService.users.length;i++){
             if(this.umService.users[i].username==username){
                 if(firstName!="") this.umService.users[i].firstName = firstName;
                 if(lastName!="") this.umService.users[i].lastName = lastName;
@@ -37,10 +43,15 @@ class LMS {
         }
     }
 
-    changeUserPassword(username, password){
-        for(let i=0;i<this.users.length;i++){
+    changeUserPassword(username, passwordOld, passwordNew){
+        for(let i=0;i<this.umService.users.length;i++){
             if(this.umService.users[i].username==username){
-                this.umService.passwords[i] = EncryptionHelper.hash(password);
+                if(this.umService.passwords[i] == EncryptionHelper.hash(passwordOld)){
+                    this.umService.passwords[i] = EncryptionHelper.hash(passwordNew);
+                    return '';
+                }else{
+                    return 'Password is incorrect!';
+                }
             }
         }
     }
