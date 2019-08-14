@@ -9,6 +9,16 @@
     background: white;
 }
 
+#logInfo{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    text-align: center;
+    height: 55px;
+    background-color: #0099CC;
+    padding: 12px 5px 12px 5px;
+}
+
 table {
     border-collapse: collapse;
     margin-bottom: 20px;
@@ -44,6 +54,47 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.button-purple{
+    height: 35px;
+    background: #aa00ff;
+    color: white;
+    margin: 20px;
+    font-weight: 400;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    padding-bottom: 5px;
+    font-size: 15px;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.button-purple:hover{
+    cursor: pointer;
+}
+
+.button-default{
+    color: #23527c;
+    background-color: #fff;
+    border-color: #ccc;
+    height: 30px;
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    padding-bottom: 5px;
+    margin-right: 10px;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.button-default:hover{
+    cursor: pointer;
 }
 
 .button-green{

@@ -6,17 +6,17 @@
     <link rel="stylesheet" href="management.css">
     <script src="../login/login.controller.js"></script>
     <script src="../../lms/authentication.service.js"></script>
-    <script src="../../lms/um.service.js"></script>
-    <script src="../../lms/permission.service.js"></script>
-    <script src="../../lms/encryption.helper.js"></script>
-    <script src="../../lms/user.js"></script>
-    <script src="../../lms/lms.js"></script>
     <script src="../../lms/book.js"></script>
+    <script src="../../lms/user.js"></script>
+    <script src="../../lms/um.service.js"></script>
+    <script src="../../lms/encryption.helper.js"></script>
+    <script src="../../lms/permission.service.js"></script>
+    <script src="../../lms/lms.js"></script>
     <script src="management.controller.js"></script>
 </head>
 
 <body class="body" onload="displayContents();loadLMS();" onbeforeunload="unloadLMS()" style="box-sizing: border-box">
-    <div id="logInfo" style="text-align: center;height: 50px;background-color: #0099CC;padding-top: 12px"></div>
+    <div id="logInfo"></div>
     <div id="container" style="text-align: center; margin-top: 10px">
         <div style="text-align: center; width: 100%;">
             <br>
@@ -61,7 +61,7 @@
                             value="Add User" />
                         <input class="button-orange" type="button" id="editUser" onclick="Funcs.showEditUser()"
                             value="Edit User" />
-                        <input class="button-orange" type="button" id="removeUser" onclick="Funcs.removeUser()"
+                        <input class="button-orange" type="button" id="removeUser" onclick="Funcs.showRemoveUser()"
                             value="Remove User" />
                     </div>
 

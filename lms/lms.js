@@ -39,6 +39,7 @@ class LMS {
                 if(lastName!="") this.umService.users[i].lastName = lastName;
                 if(phone!="") this.umService.users[i].phone = phone;
                 if(email!="") this.umService.users[i].email = email;
+                alert("Succesfully changed user details");
             }
         }
     }
@@ -57,11 +58,14 @@ class LMS {
     }
 
     removeUser(username) {
-        for(let i=0;i< this.users.length;i++){
-            if(this.users[i].username==username){
-                this.users[i].splice(i,1);
+        for(let i=0;i< this.umService.users.length;i++){
+            if(this.umService.users[i].username==username){
+                this.umService.users.splice(i,1);
+                this.umService.passwords.splice(i,1);
+                return '';
             }
         }
+        return 'No user with such username';
     }
 
     searchBook(title,author,description){

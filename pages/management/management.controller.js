@@ -150,7 +150,11 @@ const Funcs = {
     },
 
     showRemoveUser() {
-
+        if((JSON.parse(sessionStorage.getItem('authInfo'))).role!='admin'){
+            if(confirm('Do you want to delete your account?')){
+                window.lms.removeUser((JSON.parse(sessionStorage.getItem('authInfo'))).username);
+            }  
+        }
     },
 
     showAllBooks() {
@@ -160,7 +164,7 @@ const Funcs = {
             window.tableShow = false;
         } else {
             let elem = document.createElement('th');
-            elem.innerHTML = 'BookId';
+            elem.innerHTML = 'ID';
             document.getElementsByTagName('thead')[0].append(elem);
             elem = document.createElement('th');
             elem.innerHTML = 'Title';
@@ -172,7 +176,10 @@ const Funcs = {
             elem.innerHTML = 'Page Count';
             document.getElementsByTagName('thead')[0].append(elem);
             elem = document.createElement('th');
-            elem.innerHTML = 'Description';
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
             document.getElementsByTagName('thead')[0].append(elem);
 
             for (let i = 0; i < window.lms.books.length; i++) {
@@ -190,7 +197,10 @@ const Funcs = {
                 elem.innerHTML = window.lms.books[i].pageCount;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML = '';
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook()" value="Issue" />                ';
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.renewBook()" value="Renew" />                ';
                 tablerow.append(elem);
                 document.getElementsByTagName('tbody')[0].append(tablerow);
             }
@@ -207,15 +217,19 @@ function displayContents() {
     window.optShowUser = false;
     window.tableShow = false;
     if (user == null) {
-        document.getElementById('logInfo').innerHTML = "You're not logged in! <a href=\"../login/login.html\">Log in</a>";
+        document.getElementById('logInfo').innerHTML = "You're not logged in! <a style=\"color:white\" href=\"../login/login.html\">Log in</a>";
+        document.getElementById('logInfo').style.justifyContent = 'flex-start';
         document.getElementById('container').style.display = 'none';
     }
     else {
+        document.getElementById('logInfo').style.justifyContent = '';
         let elem = document.createElement('h4');
-        elem.innerHTML = "You're logged in as " + user.username + '<input style="margin-left:5px;border:none;font-size: 14px;background:none;text-decoration:underline;" type="button" value="Log out" onclick="logout()"> ';
+        elem.innerHTML = "Welcome, " + user.firstName +' '+ user.lastName;
         elem.style.color = "white";
         elem.style.height = '100%';
-        elem.style.width = '100%';
+        document.getElementById('logInfo').append(elem);
+        elem = document.createElement('div');
+        elem.innerHTML = '<input class="button-default" type="button" value="Log out" onclick="logout()">';
         document.getElementById('logInfo').append(elem);
         //console.log(user);
         let permissions = PermissionService.getRoles()[user.role];

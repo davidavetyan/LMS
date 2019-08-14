@@ -11,7 +11,7 @@ class PermissionService {
                 'addBook': false,
                 'addUser': false,
                 'editUser': true,
-                'removeUser': false,
+                'removeUser': true,
                 'acceptHold': false,
                 'acceptRenew': false,
                 'acceptReturn': false
@@ -25,7 +25,7 @@ class PermissionService {
                 'addBook': false,
                 'addUser': false,
                 'editUser': true,
-                'removeUser': false,
+                'removeUser': true,
                 'acceptHold': false,
                 'acceptRenew': false,
                 'acceptReturn': false
@@ -40,7 +40,7 @@ class PermissionService {
                 'addBook': true,
                 'addUser': false,
                 'editUser': true,
-                'removeUser': false,
+                'removeUser': true,
                 'acceptHold': true,
                 'acceptRenew': true,
                 'acceptReturn': true

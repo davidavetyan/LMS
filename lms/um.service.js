@@ -12,6 +12,8 @@ class UserManagement {
             if(this.users[i].username==username){
                 return {
                     username: username,
+                    firstName: this.users[i].firstName,
+                    lastName: this.users[i].lastName,
                     role: this.users[i].role,
                     password: this.passwords[i]
                 };
