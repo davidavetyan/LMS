@@ -17,13 +17,10 @@
 
 <body class="body" onload="displayContents();loadLMS();" onbeforeunload="unloadLMS()" style="box-sizing: border-box">
     <div id="logInfo"></div>
-    <div id="container" style="text-align: center; margin-top: 10px">
-        <div style="text-align: center; width: 100%;">
-            <br>
-            <div>
-                <h3 style="margin: 10px; text-align: center">Book Management</h3>
-                <hr style="width: 20%; color: black; margin-left: 40%">
-                <div style="display: flex; align-items: center; justify-content: center;flex-wrap:wrap;">
+    <div id="container">
+        <div style="display: flex; flex-wrap:wrap; flex-direction:column; width: 100%;">
+            <div id="bookPanel" style="display:none;width:100%;border-bottom: 1px solid rgba(0,0,0,.125);">
+                <div style="display: flex; align-items: center; justify-content: flex-start;flex-wrap:wrap;">
                     <div style="display: flex; align-items: center; justify-content: center">
                         <input class="button" type="button" id="issueBook" onclick="Funcs.issueBook()"
                             value="Place Hold" />
@@ -50,13 +47,9 @@
                     </div>
                 </div>
             </div>
-
-            <br><br>
-            <div>
-                <h3 style="margin: 10px; text-align: center">User Management</h3>
-                <hr style="width: 20%; color: black; margin-left: 40%">
-                <div style="display: flex; align-items: center; justify-content: center;flex-wrap:wrap;">
-                    <div style="display: flex; align-items: center;width: 100%;justify-content: center">
+            <div id="userPanel" style="display:none;width:100%;border-bottom: 1px solid rgba(0,0,0,.125);">
+                <div style="display: flex; align-items: center; justify-content: flex-start;flex-wrap:wrap;">
+                    <div style="display: flex; align-items: center;width: 100%;justify-content: flex-start">
                         <input class="button-orange" type="button" id="addUser" onclick="Funcs.showAddUser()"
                             value="Add User" />
                         <input class="button-orange" type="button" id="editUser" onclick="Funcs.showEditUser()"
@@ -70,7 +63,7 @@
                 </div>
             </div>
         </div>
-        <table id="table" style="margin-top: 20px;width:100%">
+        <table id="table" style="text-align: center; margin-top: 20px;width:100%">
             <thead></thead>
             <tbody></tbody>
         </table>

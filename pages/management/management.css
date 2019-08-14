@@ -14,7 +14,7 @@
     justify-content: space-between;
     align-content: center;
     text-align: center;
-    height: 55px;
+    height: 75px;
     background-color: #0099CC;
     padding: 12px 5px 12px 5px;
 }
@@ -129,6 +129,11 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.button-orange:hover{
+    color: #fff;
+    background-color: #ec971f;
+    border-color: #d58512;
+}
 
 .text-field{
     border-radius: 5px;

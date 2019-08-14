@@ -206,16 +206,36 @@ const Funcs = {
             }
             window.tableShow = true;
         }
+    },
+
+    showBookPanel(){
+        if(window.bookPanelShow == false){
+            document.getElementById('bookPanel').style.display = 'inline';
+            window.bookPanelShow = true;
+        }else{
+            document.getElementById('bookPanel').style.display = 'none';
+            window.bookPanelShow = false;
+        }
+    },
+
+    showUserPanel(){
+        if(window.userPanelShow == false){
+            document.getElementById('userPanel').style.display = 'inline';
+            window.userPanelShow = true;
+        }else{
+            document.getElementById('userPanel').style.display = 'none';
+            window.userPanelShow = false;
+        }
     }
 };
-
-
 
 function displayContents() {
     let user = JSON.parse(sessionStorage.getItem('authInfo'));
     window.optShowBook = false;
     window.optShowUser = false;
-    window.tableShow = false;
+    window.tableShow = true;
+    window.bookPanelShow = false;
+    window.userPanelShow = false;
     if (user == null) {
         document.getElementById('logInfo').innerHTML = "You're not logged in! <a style=\"color:white\" href=\"../login/login.html\">Log in</a>";
         document.getElementById('logInfo').style.justifyContent = 'flex-start';
@@ -223,13 +243,31 @@ function displayContents() {
     }
     else {
         document.getElementById('logInfo').style.justifyContent = '';
-        let elem = document.createElement('h4');
+        let elem = document.createElement('div');
         elem.innerHTML = "Welcome, " + user.firstName +' '+ user.lastName;
         elem.style.color = "white";
         elem.style.height = '100%';
+        elem.style.fontWeight = '500';
+        elem.style.fontSize = '18px';
+        elem.style.display = 'flex';
+        elem.style.alignItems = 'center';
+        let b = document.createElement('button');
+        b.innerHTML = 'Manage Books';
+        b.classList.add("button-orange");
+        b.id = "bookManageButton";
+        b.addEventListener('click',function(){Funcs.showBookPanel()});
+        elem.append(b);
+        b = document.createElement('button');
+        b.innerHTML = 'Manage User';
+        b.classList.add("button-orange");
+        b.id = "userManageButton";
+        b.addEventListener('click',function(){Funcs.showUserPanel()});
+        elem.append(b);
         document.getElementById('logInfo').append(elem);
         elem = document.createElement('div');
         elem.innerHTML = '<input class="button-default" type="button" value="Log out" onclick="logout()">';
+        elem.style.display = 'flex';
+        elem.style.alignItems = 'center';
         document.getElementById('logInfo').append(elem);
         //console.log(user);
         let permissions = PermissionService.getRoles()[user.role];
