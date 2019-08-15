@@ -158,11 +158,11 @@ const Funcs = {
     },
 
     showAllBooks() {
-        if (window.tableShow == true) {
+        if (window.tableBookShow == false && window.tableUserShow == true) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
             document.getElementsByTagName('tbody')[0].innerHTML = '';
-            window.tableShow = false;
-        } else {
+            window.tableBookShow = true;
+            window.tableUserShow = false;
             let elem = document.createElement('th');
             elem.innerHTML = 'ID';
             document.getElementsByTagName('thead')[0].append(elem);
@@ -204,27 +204,90 @@ const Funcs = {
                 tablerow.append(elem);
                 document.getElementsByTagName('tbody')[0].append(tablerow);
             }
-            window.tableShow = true;
+        }
+    },
+
+    showAllUsers(){
+        if (window.tableUserShow == false) {
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            window.tableUserShow = true;
+            window.tableBookShow = false;
+            let elem = document.createElement('th');
+            elem.innerHTML = 'Username';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Name';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Phone';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Email';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Role';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+
+            for (let i = 0; i < window.lms.umService.users.length; i++) {
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.umService.users[i].username;
+                let tablerow = document.createElement('tr');
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.umService.users[i].firstName+' '+window.lms.umService.users[i].lastName;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.umService.users[i].phone;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.umService.users[i].email;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.umService.users[i].role;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                if(window.lms.umService.users[i].role == 'admin')
+                    elem.innerHTML = '<input class="button-purple" style="cursor: not-allowed" type="button" onclick="Funcs.renewBook()" value="Remove" />';
+                else
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.renewBook()" value="Remove" />';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
+            }
+
         }
     },
 
     showBookPanel(){
-        if(window.bookPanelShow == false){
+        if(window.bookPanelShow == false && window.userPanelShow == true){
+            document.getElementById('bookPanel').style.display = 'inline';
+            document.getElementById('userPanel').style.display = 'none';
+            window.bookPanelShow = true;
+            window.userPanelShow = false;
+        }else if(window.bookPanelShow == false && window.userPanelShow == false){
             document.getElementById('bookPanel').style.display = 'inline';
             window.bookPanelShow = true;
-        }else{
+        }else if(window.bookPanelShow == true && window.userPanelShow == false){
             document.getElementById('bookPanel').style.display = 'none';
             window.bookPanelShow = false;
         }
     },
 
     showUserPanel(){
-        if(window.userPanelShow == false){
+        if(window.userPanelShow == false && window.bookPanelShow == true){
             document.getElementById('userPanel').style.display = 'inline';
+            document.getElementById('bookPanel').style.display = 'none';
+            window.bookPanelShow = false;
             window.userPanelShow = true;
-        }else{
+        }else if(window.userPanelShow == true && window.bookPanelShow == false){
             document.getElementById('userPanel').style.display = 'none';
             window.userPanelShow = false;
+        }else if(window.userPanelShow == false && window.bookPanelShow == false){
+            document.getElementById('userPanel').style.display = 'inline';
+            window.userPanelShow = true;
         }
     }
 };
@@ -233,7 +296,8 @@ function displayContents() {
     let user = JSON.parse(sessionStorage.getItem('authInfo'));
     window.optShowBook = false;
     window.optShowUser = false;
-    window.tableShow = true;
+    window.tableBookShow = false;
+    window.tableUserShow = true;
     window.bookPanelShow = false;
     window.userPanelShow = false;
     if (user == null) {
@@ -252,16 +316,16 @@ function displayContents() {
         elem.style.display = 'flex';
         elem.style.alignItems = 'center';
         let b = document.createElement('button');
-        b.innerHTML = 'Manage Books';
+        b.innerHTML = 'Books';
         b.classList.add("button-orange");
         b.id = "bookManageButton";
-        b.addEventListener('click',function(){Funcs.showBookPanel()});
+        b.addEventListener('click',function(){Funcs.showBookPanel();Funcs.showAllBooks()});
         elem.append(b);
         b = document.createElement('button');
-        b.innerHTML = 'Manage User';
+        b.innerHTML = 'Users';
         b.classList.add("button-orange");
         b.id = "userManageButton";
-        b.addEventListener('click',function(){Funcs.showUserPanel()});
+        b.addEventListener('click',function(){Funcs.showUserPanel();Funcs.showAllUsers()});
         elem.append(b);
         document.getElementById('logInfo').append(elem);
         elem = document.createElement('div');
@@ -277,6 +341,8 @@ function displayContents() {
                 if (document.getElementById(key) != null) document.getElementById(key).style.display = 'none';
             }
         }
+
+        Funcs.showAllBooks();
     }
 }
 
