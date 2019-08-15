@@ -30,28 +30,21 @@ const Funcs = {
         }
     },
 
-    showIssueBook() {
-        if (window.optShowBook == false) {
-            document.getElementById('addOptionBook').innerHTML = '<input style="margin-right: 5px" type="text" id="bookId" placeholder="Book\'s ID"><input style="margin-right: 5px" class="button-orange" type="button" onclick="Funcs.issueBook()" value="Place Hold">';
-            window.optShowBook = true;
-        } else {
-            document.getElementById('addOptionBook').innerHTML = '';
-            window.optShowBook = false;
-        }
-    },
-
-    issueBook() {
+    issueBook(event) {
         if (window.lms != undefined) {
-            window.lms.issueBook(bookId);
+            let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
+            currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+            window.lms.issueBook(currBookId, username);
+            currBookId = '';
         }
     },
 
-    renewBook() {
-
-    },
-
-    viewHistory() {
-
+    renewBook(event) {
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+        let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
+        let days = event.target.parentNode.previousSibling.innerHTML;
+        window.lms.renewBook(currBookId,username,days);
+        currBookId = '';
     },
 
     showAddBook() {
@@ -70,26 +63,63 @@ const Funcs = {
                 document.getElementById('errorInput').innerHTML = "Invalid parameters";
             }
             else {
-                document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDescription').value);
+                document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDescription').value, [], 0);
             }
         }
     },
 
-    acceptHold() {
+    removeBook(event){
+        if (confirm('Are you sure to delete this book?')) {            
+            currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+            window.lms.removeBook(currBookId);
+            currBookId = '';   
+            document.location.reload();
+        }
+    },
 
+    acceptHold(event) {
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+
+        window.lms.acceptHold(currBookId);
+        currBookId = '';
+        document.location.reload();
+    },
+
+    rejectHold(event){
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+
+        window.lms.rejectHold(currBookId);
+        currBookId = '';
+        document.location.reload()
     },
 
     acceptReturn() {
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
 
+        window.lms.acceptReturn(currBookId);
+        currBookId = '';
+        document.location.reload();
     },
 
-    acceptRenew() {
+    acceptRenew(event) {
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
 
+        window.lms.acceptRenew(currBookId);
+        currBookId = '';
+        document.location.reload();
+    },
+
+    rejectRenew(event){
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+
+        window.lms.rejectRenew(currBookId);
+        currBookId = '';
+        document.location.reload();
     },
 
     showAddUser() {
         if (window.optShowUser == false) {
-            document.getElementById('addOptionUser').innerHTML = '<input style="margin-right: 5px" class="text-field" type="text" id="username" placeholder="Username"><input class="text-field" style="margin-right: 5px" type="text" id="userFirstName" placeholder="First Name"><input class="text-field" style="margin-right: 5px" type="text" id="userLastName" placeholder="Last Name"><input class="text-field" style="margin-right: 5px" type="text" id="userPhone" placeholder="Phone"><input class="text-field" style="margin-right: 5px" type="text" id="userEmail" placeholder="Email"><input class="text-field" style="margin-right: 5px" type="text" id="userRole" placeholder="Role"><input style="margin-right: 5px" class="text-field" type="text" id="userPassword" placeholder="Password"><input class="button-green" style="margin-right: 5px" type="button" onclick="Funcs.addUser()" value="Add User"><div id="errorInput" style="color:red;"></div>';
+            document.getElementById('addOptionUser').innerHTML = '<input style="margin-right: 5px" class="text-field" type="text" id="username" placeholder="Username"><input class="text-field" style="margin-right: 5px" type="text" id="userFirstName" placeholder="First Name"><input class="text-field" style="margin-right: 5px" type="text" id="userLastName" placeholder="Last Name"><input class="text-field" style="margin-right: 5px" type="text" id="userPhone" placeholder="Phone"><input class="text-field" style="margin-right: 5px" type="text" id="userEmail" placeholder="Email"><input style="margin-right: 5px" class="text-field" type="text" id="userPassword" placeholder="Password"><input class="button-green" style="margin-right: 5px" type="button" onclick="Funcs.addUser()" value="Add Employee"><div id="errorInput" style="color:red;"></div>';
             window.optShowUser = true;
         } else {
             document.getElementById('addOptionUser').innerHTML = '';
@@ -104,12 +134,16 @@ const Funcs = {
             let userLastName = document.getElementById('userLastName').value;
             let userPhone = document.getElementById('userPhone').value;
             let userEmail = document.getElementById('userEmail').value;
-            let userRole = document.getElementById('userRole').value;
+            let userRole = 'employee';
             let userPassword = document.getElementById('userPassword').value;
-            if (username == "" || userFirstName == "" || userLastName == "" || userEmail == "" || userPhone == "" || userRole == "" || userPassword=="") {
+            if (username == "" || userFirstName == "" || userLastName == "" || userEmail == "" || userPhone == "" || userRole == "" || userPassword == "") {
                 document.getElementById('errorInput').innerHTML = "All fields should be filled in!";
             } else {
                 document.getElementById('errorInput').innerHTML = window.lms.addUser(document.getElementById('username').value, document.getElementById('userFirstName').value, document.getElementById('userLastName').value, userPhone, userEmail, userRole, userPassword);
+            }
+            if(document.getElementById('errorInput').innerHTML==''){
+                document.getElementById('addOptionUser').innerHTML = '';
+                window.optShowUser = false;
             }
         }
     },
@@ -124,40 +158,47 @@ const Funcs = {
         }
     },
 
-    editUser(){
+    editUser() {
         let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
         let firstName = document.getElementById('userFirstName').value;
         let lastName = document.getElementById('userLastName').value;
         let phone = document.getElementById('userPhone').value;
         let email = document.getElementById('userEmail').value;
-        window.lms.editUser(username,firstName,lastName,phone,email);
+        window.lms.editUser(username, firstName, lastName, phone, email);
+    },
+
+    removeUser(event) {
+        let username = event.target.parentNode.parentNode.firstChild.innerHTML;
+        if (confirm('Are you sure to delete this account?')) {
+            window.lms.removeUser(username);
+        }
     },
 
     changePassword() {
         let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
         let oldPass = document.getElementById('userPasswordOld').value;
         let newPass = document.getElementById('userPasswordNew').value;
-        let ans = window.lms.changeUserPassword(username,oldPass,newPass);
-        if(ans!=''){
+        let ans = window.lms.changeUserPassword(username, oldPass, newPass);
+        if (ans != '') {
             document.getElementById('errorInput').innerHTML = ans;
-        }else{
+        } else {
             alert('User\'s password succesfully changed!');
             document.getElementById('errorInput').innerHTML = '';
         }
     },
 
     showRemoveUser() {
-        if((JSON.parse(sessionStorage.getItem('authInfo'))).role!='admin'){
-            if(confirm('Do you want to delete your account?')){
+        if ((JSON.parse(sessionStorage.getItem('authInfo'))).role != 'admin') {
+            if (confirm('Do you want to delete your account?')) {
                 window.lms.removeUser((JSON.parse(sessionStorage.getItem('authInfo'))).username);
-            }  
-        }else{
+            }
+        } else {
             console.log('You can\'t delete your account, Admin!');
         }
     },
 
-    showRecommendBook(event){
-        recBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+    showRecommendBook(event) {
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
         if (window.recShow == false) {
             document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><select id="rating"><option value="1">Very bad</option><option value="2">Bad</option><option value="3">Okay</option><option value="4">Good</option><option value="5">Excellent</option></select><input class="text-field" style="width: 40%" type="text" id="message" placeholder="Message"><input class="button-green" style="margin-right: 5px" type="button" onclick="Funcs.recommendBook()" value="Submit"></div>';
             window.recShow = true;
@@ -167,81 +208,419 @@ const Funcs = {
         }
     },
 
-    recommendBook(){
+    recommendBook() {
         let rating = document.getElementById('rating').value;
         let message = document.getElementById('message').value;
         let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
-        window.lms.addRecommendation(recBookId,username,rating,message);
+        window.lms.addRecommendation(currBookId, username, rating, message);
         document.getElementById('addRecommendBook').innerHTML = '';
         window.recShow = false;
-        recBookId = '';
+        currBookId = '';
     },
 
-    showAllBooks() {
-        if (window.tableBookShow == false && window.tableUserShow == true) {
-            document.getElementsByTagName('thead')[0].innerHTML = '';
-            document.getElementsByTagName('tbody')[0].innerHTML = '';
-            window.tableBookShow = true;
-            window.tableUserShow = false;
-            let elem = document.createElement('th');
-            elem.innerHTML = 'ID';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Title';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Author';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Page Count';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Rating';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
+    showPendingRenew() {
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        let elem = document.createElement('th');
+        elem.innerHTML = 'ID';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Page Count';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Username';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Days Left';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
 
-            for (let i = 0; i < window.lms.books.length; i++) {
-                elem = document.createElement('td');
-                elem.innerHTML = window.lms.books[i].bookId;
-                let tablerow = document.createElement('tr');
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = window.lms.books[i].title;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = window.lms.books[i].author;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = window.lms.books[i].pageCount;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = window.lms.books[i].pageCount;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook()" value="Issue" />                ';
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.renewBook()" value="Renew" />                ';
-                elem.style.width = '10%';
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
-                elem.style.width = '15%';
-                tablerow.append(elem);
-                document.getElementsByTagName('tbody')[0].append(tablerow);
+        for (let i = 0; i < window.lms.pendingRenew.length; i++) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = window.lms.pendingRenew[i].bookId;
+            tablerow.append(elem);
+            for (let book of window.lms.books) {
+                if (book.bookId == window.lms.pendingRenew[i].bookId) {
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.title;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.author;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.pageCount;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.pendingRenew[i].username;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.pendingRenew[i].days;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.acceptRenew(event)" value="Accept Renew" />';
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button" type="button" onclick="Funcs.rejectRenew(event)" value="Reject Renew" />';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
             }
         }
     },
 
-    showAllUsers(){
+    showTaken() {
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        let elem = document.createElement('th');
+        elem.innerHTML = 'ID';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Page Count';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Rating';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Days Left';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+
+        for (let i = 0; i < window.lms.takenBooks.length; i++) {
+            let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
+            if (window.lms.takenBooks[i].username == username) {
+                let tablerow = document.createElement('tr');
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.takenBooks[i].bookId;
+                tablerow.append(elem);
+                for (let book of window.lms.books) {
+                    if (book.bookId == window.lms.takenBooks[i].bookId) {
+                        elem = document.createElement('td');
+                        elem.innerHTML = book.title;
+                        tablerow.append(elem);
+                        elem = document.createElement('td');
+                        elem.innerHTML = book.author;
+                        tablerow.append(elem);
+                        elem = document.createElement('td');
+                        elem.innerHTML = book.pageCount;
+                        tablerow.append(elem);
+                        elem = document.createElement('td');
+                        elem.innerHTML = String(book.getRatingOfBook());
+                        tablerow.append(elem);
+                        elem = document.createElement('td');
+                        elem.innerHTML = window.lms.takenBooks[i].days;
+                        tablerow.append(elem);
+                        elem = document.createElement('td');
+                        elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.renewBook(event)" value="Renew" />                ';
+                        tablerow.append(elem);
+                        elem = document.createElement('td');
+                        elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                        elem.style.width = '10%';
+                        tablerow.append(elem);
+                        document.getElementsByTagName('tbody')[0].append(tablerow);
+                    }
+                }
+            }
+        }
+    },
+
+    showAllTaken(){
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        let elem = document.createElement('th');
+        elem.innerHTML = 'ID';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Page Count';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Username';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Days Left';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+
+        for (let i = 0; i < window.lms.takenBooks.length; i++) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = window.lms.takenBooks[i].bookId;
+            tablerow.append(elem);
+            for (let book of window.lms.books) {
+                if (book.bookId == window.lms.takenBooks[i].bookId) {
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.title;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.author;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.pageCount;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.takenBooks[i].username;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.takenBooks[i].days;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.acceptReturn(event)" value="Accept Return" />                ';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
+            }
+        }
+    },
+
+    showIssued(){
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        let elem = document.createElement('th');
+        elem.innerHTML = 'ID';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Page Count';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Username';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+
+        for (let i = 0; i < window.lms.issuedBooks.length; i++) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = window.lms.issuedBooks[i].bookId;
+            tablerow.append(elem);
+            for (let book of window.lms.books) {
+                if (book.bookId == window.lms.issuedBooks[i].bookId) {
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.title;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.author;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = book.pageCount;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.issuedBooks[i].username;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.acceptHold(event)" value="Accept" />                ';
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button" type="button" onclick="Funcs.rejectHold(event)" value="Reject" />                ';
+                    elem.style.width = '10%';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
+            }
+            
+        }
+    },
+
+    showAllBooks() {
+        let role = (JSON.parse(sessionStorage.getItem('authInfo'))).role;
+        if(role=='student'){
+
+            if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+                document.getElementsByTagName('thead')[0].innerHTML = '';
+                document.getElementsByTagName('tbody')[0].innerHTML = '';
+                window.tableBookShow = true;
+                window.tableUserShow = false;
+                let elem = document.createElement('th');
+                elem.innerHTML = 'ID';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Title';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Author';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Page Count';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Rating';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = '';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = '';
+                document.getElementsByTagName('thead')[0].append(elem);
+    
+                for (let i = 0; i < window.lms.books.length; i++) {
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].bookId;
+                    let tablerow = document.createElement('tr');
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].title;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].author;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].pageCount;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                    elem.style.width = '10%';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
+            }
+
+        }else if(role=='employee'){
+
+            if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+                document.getElementsByTagName('thead')[0].innerHTML = '';
+                document.getElementsByTagName('tbody')[0].innerHTML = '';
+                window.tableBookShow = true;
+                window.tableUserShow = false;
+                let elem = document.createElement('th');
+                elem.innerHTML = 'ID';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Title';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Author';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Page Count';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Rating';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = '';
+                document.getElementsByTagName('thead')[0].append(elem);
+    
+                for (let i = 0; i < window.lms.books.length; i++) {
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].bookId;
+                    let tablerow = document.createElement('tr');
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].title;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].author;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].pageCount;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input class="button" type="button" onclick="Funcs.removeBook(event)" value="Remove" />';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
+            }
+
+        }else if(role=='admin'){
+
+            if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+                document.getElementsByTagName('thead')[0].innerHTML = '';
+                document.getElementsByTagName('tbody')[0].innerHTML = '';
+                window.tableBookShow = true;
+                window.tableUserShow = false;
+                let elem = document.createElement('th');
+                elem.innerHTML = 'ID';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Title';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Author';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Page Count';
+                document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = 'Rating';
+                document.getElementsByTagName('thead')[0].append(elem);
+    
+                for (let i = 0; i < window.lms.books.length; i++) {
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].bookId;
+                    let tablerow = document.createElement('tr');
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].title;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].author;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = window.lms.books[i].pageCount;
+                    tablerow.append(elem);
+                    elem = document.createElement('td');
+                    elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
+            }
+
+        }
+
+        
+    },
+
+    showAllUsers() {
+        let role = (JSON.parse(sessionStorage.getItem('authInfo'))).role;
+        if(role!='admin'){return;}
         if (window.tableUserShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
             document.getElementsByTagName('tbody')[0].innerHTML = '';
@@ -272,7 +651,7 @@ const Funcs = {
                 let tablerow = document.createElement('tr');
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML = window.lms.umService.users[i].firstName+' '+window.lms.umService.users[i].lastName;
+                elem.innerHTML = window.lms.umService.users[i].firstName + ' ' + window.lms.umService.users[i].lastName;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = window.lms.umService.users[i].phone;
@@ -284,42 +663,47 @@ const Funcs = {
                 elem.innerHTML = window.lms.umService.users[i].role;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                if(window.lms.umService.users[i].role == 'admin')
-                    elem.innerHTML = '<input class="button-purple" style="cursor: not-allowed" type="button" onclick="Funcs.renewBook()" value="Remove" />';
-                else
-                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.renewBook()" value="Remove" />';
-                tablerow.append(elem);
-                document.getElementsByTagName('tbody')[0].append(tablerow);
+                if (window.lms.umService.users[i].role == 'admin') {
+                    elem.innerHTML = '<input class="button-purple" id="removeUs" style="cursor: not-allowed" type="button" onclick="Funcs.removeUser(event)" value="Remove" />';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                    document.getElementById('removeUs').disabled = true;
+                }
+                else {
+                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.removeUser(event)" value="Remove" />';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                }
             }
 
         }
     },
 
-    showBookPanel(){
-        if(window.bookPanelShow == false && window.userPanelShow == true){
+    showBookPanel() {
+        if (window.bookPanelShow == false && window.userPanelShow == true) {
             document.getElementById('bookPanel').style.display = 'inline';
             document.getElementById('userPanel').style.display = 'none';
             window.bookPanelShow = true;
             window.userPanelShow = false;
-        }else if(window.bookPanelShow == false && window.userPanelShow == false){
+        } else if (window.bookPanelShow == false && window.userPanelShow == false) {
             document.getElementById('bookPanel').style.display = 'inline';
             window.bookPanelShow = true;
-        }else if(window.bookPanelShow == true && window.userPanelShow == false){
+        } else if (window.bookPanelShow == true && window.userPanelShow == false) {
             document.getElementById('bookPanel').style.display = 'none';
             window.bookPanelShow = false;
         }
     },
 
-    showUserPanel(){
-        if(window.userPanelShow == false && window.bookPanelShow == true){
+    showUserPanel() {
+        if (window.userPanelShow == false && window.bookPanelShow == true) {
             document.getElementById('userPanel').style.display = 'inline';
             document.getElementById('bookPanel').style.display = 'none';
             window.bookPanelShow = false;
             window.userPanelShow = true;
-        }else if(window.userPanelShow == true && window.bookPanelShow == false){
+        } else if (window.userPanelShow == true && window.bookPanelShow == false) {
             document.getElementById('userPanel').style.display = 'none';
             window.userPanelShow = false;
-        }else if(window.userPanelShow == false && window.bookPanelShow == false){
+        } else if (window.userPanelShow == false && window.bookPanelShow == false) {
             document.getElementById('userPanel').style.display = 'inline';
             window.userPanelShow = true;
         }
@@ -335,7 +719,7 @@ function displayContents() {
     window.tableUserShow = true;
     window.bookPanelShow = false;
     window.userPanelShow = false;
-    window.recBookId = '';
+    window.currBookId = '';
     if (user == null) {
         document.getElementById('logInfo').innerHTML = "You're not logged in! <a style=\"color:white\" href=\"../login/login.html\">Log in</a>";
         document.getElementById('logInfo').style.justifyContent = 'flex-start';
@@ -344,7 +728,7 @@ function displayContents() {
     else {
         document.getElementById('logInfo').style.justifyContent = '';
         let elem = document.createElement('div');
-        elem.innerHTML = "Welcome, " + user.firstName +' '+ user.lastName;
+        elem.innerHTML = "Welcome, " + user.firstName + ' ' + user.lastName;
         elem.style.color = "white";
         elem.style.height = '100%';
         elem.style.fontWeight = '500';
@@ -355,13 +739,13 @@ function displayContents() {
         b.innerHTML = 'Books';
         b.classList.add("button-orange");
         b.id = "bookManageButton";
-        b.addEventListener('click',function(){Funcs.showBookPanel();Funcs.showAllBooks()});
+        b.addEventListener('click', function () { Funcs.showBookPanel(); Funcs.showAllBooks() });
         elem.append(b);
         b = document.createElement('button');
         b.innerHTML = 'Users';
         b.classList.add("button-orange");
         b.id = "userManageButton";
-        b.addEventListener('click',function(){Funcs.showUserPanel();Funcs.showAllUsers()});
+        b.addEventListener('click', function () { Funcs.showUserPanel(); Funcs.showAllUsers() });
         elem.append(b);
         document.getElementById('logInfo').append(elem);
         elem = document.createElement('div');
@@ -395,9 +779,11 @@ function loadLMS() {
                 window.lms.umService.passwords.push(lmsString.umService.passwords[i]);
             }
             for (let i = 0; i < lmsString.books.length; i++) {
-                window.lms.books.push(new Book(lmsString.books[i].bookId, lmsString.books[i].title, lmsString.books[i].author, lmsString.books[i].pageCount, lmsString.books[i].description, lmsString.books[i].recommendations));
-                window.lms.takenBooks.push(lmsString.takenBooks[i]);
+                window.lms.books.push(new Book(lmsString.books[i].bookId, lmsString.books[i].title, lmsString.books[i].author, lmsString.books[i].pageCount, lmsString.books[i].description, lmsString.books[i].recommendations, lmsString.books[i].takenNum));
             }
+            window.lms.issuedBooks = lmsString.issuedBooks;
+            window.lms.takenBooks = lmsString.takenBooks;
+            window.lms.pendingRenew = lmsString.pendingRenew;
         }
     }
 

@@ -1,11 +1,24 @@
 class Book {
-    constructor(bookId,title,author,pageCount,description,recommendations){
+    constructor(bookId,title,author,pageCount,description,recommendations,takenNum){
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.pageCount = pageCount;
         this.description = description;
         this.recommendations = recommendations;
+        this.takenNum = takenNum;
+    }
+
+    getRatingOfBook(){
+        if(this.recommendations.length==0){
+            return 'Not rated';
+        }else{
+            let x = 0;
+            for(let i=0;i<this.recommendations.length;i++){
+                x+=Number(this.recommendations[i].rating);
+            }
+            return ((x/(this.recommendations.length)).toFixed(1));
+        }
     }
 
     static generateRandomBook(){
@@ -15,7 +28,8 @@ class Book {
         let pageCount = Math.floor(Math.random()*250)+100;
         let description = genRandomDesc();
         let recommendations = [];
-        return new Book(bookId,title,author,pageCount, description, recommendations);
+        let takenNum = 0;
+        return new Book(bookId,title,author,pageCount, description, recommendations, takenNum);
     }
 }
 

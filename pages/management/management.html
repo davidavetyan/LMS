@@ -22,26 +22,16 @@
         <div style="display: flex; flex-wrap:wrap; flex-direction:column; width: 100%;">
             <div id="bookPanel" style="display:none;width:100%;border-bottom: 1px solid rgba(0,0,0,.125);">
                 <div style="display: flex; align-items: flex-start; justify-content: flex-start;flex-wrap:wrap;">
-                    <div style="width: 100%; display: flex; align-items: center; justify-content: flex-start">
-                        <input class="button" type="button" id="issueBook" onclick="Funcs.issueBook()"
-                            value="Place Hold" />
-                        <input class="button" type="button" id="renewBook" onclick="Funcs.renewBook()"
-                            value="Renew Book" />
-                        <input class="button" type="button" id="viewHistory" onclick="Funcs.viewHistory()"
-                            value="View History" />
-                        <input class="button" type="button" id="searchBook" onclick="Funcs.showSearch()"
-                            value="Search Book" />
-                        <input class="button" type="button" id="addBook" onclick="Funcs.addBook()" value="Add Book" />
-                        <input class="button" type="button" id="recommendBook" onclick="Funcs.recommend()"
-                            value="Recommend" />
-                        <input class="button" type="button" id="acceptHold" onclick="Funcs.acceptHold()"
-                            value="Accept Hold" />
-                        <input class="button" type="button" id="acceptReturn" onclick="Funcs.acceptReturn()"
-                            value="Accept Return" />
-                        <input class="button" type="button" id="acceptRenew" onclick="Funcs.acceptRenew()"
-                            value="Accept Renewal" />
-                        <input class="button" type="button" onclick="Funcs.genRandomBooks()"
-                            value="Generate Random Books" />
+                    <div style="width: 100%; display: flex; flex-wrap:wrap;align-items: center; justify-content: flex-start">
+                        <input class="button" type="button" id="showTaken" onclick="Funcs.showTaken()"
+                            value="Show Taken" />
+                        <input class="button" type="button" id="showIssued" onclick="Funcs.showIssued()"
+                            value="Show Issued" />
+                        <input class="button" type="button" id="showAllTaken" onclick="Funcs.showAllTaken()"
+                            value="Show Taken" />
+                        <input class="button" type="button" id="showPendingRenew" onclick="Funcs.showPendingRenew()" value="Show Pending Renew" />
+                        <input class="button" type="button" id="addBook" onclick="Funcs.showAddBook()" value="Add Book" />
+                        
                         <input class="button" type="button" onclick="Funcs.showAllBooks()" value="Show Books" />
                     </div>
 
@@ -55,11 +45,11 @@
                 <div style="display: flex; align-items: center; justify-content: flex-start;flex-wrap:wrap;">
                     <div style="display: flex; align-items: center;width: 100%;justify-content: flex-start">
                         <input class="button-orange" type="button" id="addUser" onclick="Funcs.showAddUser()"
-                            value="Add User" />
+                            value="Add Employee" />
                         <input class="button-orange" type="button" id="editUser" onclick="Funcs.showEditUser()"
-                            value="Edit User" />
+                            value="Edit Details" />
                         <input class="button-orange" type="button" id="removeUser" onclick="Funcs.showRemoveUser()"
-                            value="Remove User" />
+                            value="Remove Account" />
                     </div>
 
                     <div id="addOptionUser" style="display: flex;align-items: center;flex-wrap:wrap;justify-content: space-between">

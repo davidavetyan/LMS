@@ -2,10 +2,12 @@ class LMS {
     constructor(){
         this.umService = new UserManagement();
         this.books = [];
-        this.takenBooks = []; //0-not taken, 1-placed, 2-taken
+        this.issuedBooks = [];
+        this.takenBooks = [];
+        this.pendingRenew = [];
     }
 
-    addBook(bookId, title, author, pageCount, description, recommendations) {
+    addBook(bookId, title, author, pageCount, description, recommendations, takenNum) {
         if(bookId=="" || title=="" || author=="" || pageCount==""){
             this.books.push(Book.generateRandomBook());
             this.takenBooks.push(0);
@@ -15,9 +17,29 @@ class LMS {
                     return 'Book with such ID already exists!';
                 }
             }
-            this.books.push(new Book(bookId, title, author, pageCount ,description,recommendations));
+            this.books.push(new Book(bookId, title, author, pageCount ,description,recommendations,takenNums));
             this.takenBooks.push(0);
             return '';
+        }
+    }
+
+    removeBook(bookId){
+        for(let i=0;i<this.takenBooks.length;i++){
+            if(this.takenBooks[i].bookId == bookId){
+                alert('Can\'t remove the book, because it\'s taken!');
+                return;
+            }
+        }
+        for(let i=0;i<this.issuedBooks.length;i++){
+            if(this.issuedBooks[i].bookId == bookId){
+                this.issuedBooks.splice(i,1);
+                return;
+            }
+        }
+        for(let i=0;i<this.books.length;i++){
+            if(this.books[i].bookId==bookId){
+                this.books.splice(i,1);
+            }
         }
     }
 
@@ -142,32 +164,89 @@ class LMS {
         
     }
 
-    acceptHold(bookId, username){
+    acceptHold(bookId){
+        for(let i=0;i<this.issuedBooks.length;i++){
+            if(this.issuedBooks[i].bookId == bookId){
+                this.takenBooks.push({bookId,username:this.issuedBooks[i].username,days:15});
+                this.issuedBooks.splice(i,1);
+                break;
+            }
+        }
+
         for(let i=0;i<this.books.length;i++){
             if(this.books[i].bookId==bookId){
-                this.takenBooks[i]=username;
+                this.books[i].takenNum++;
+                return;
+            }
+        }
+    }
+
+    rejectHold(bookId){
+        for(let i=0;i<this.issuedBooks.length;i++){
+            if(this.issuedBooks[i].bookId == bookId){
+                this.issuedBooks.splice(i,1);
+                return;
             }
         }
     }
 
     acceptReturn(bookId){
-        for(let i=0;i<this.books.length;i++){
-            if(this.books[i].bookId==bookId){
-                this.takenBooks[i]=0;
+        for(let i=0;i<this.takenBooks.length;i++){
+            if(this.takenBooks[i].bookId==bookId){
+                this.takenBooks.splice(i,1);
+                return;
             }
         }
     }
 
-    issueBook(bookId){
-        for(let i=0;i<this.books.length;i++){
-            if(this.books[i].bookId==bookId){
-                this.takenBooks[i] = 1;
+    issueBook(bookId, username){
+        for(let i=0;i<this.takenBooks.length;i++){
+            if(this.takenBooks[i].bookId==bookId){
+                alert('The book has already been taken!');
+                return;
+            }
+        }
+        for(let i=0;i<this.issuedBooks.length;i++){
+            if(this.issuedBooks[i].bookId==bookId){
+                alert('The book has already been issued by another user!');
+                return;
+            }
+        }
+        this.issuedBooks.push({bookId,username});
+    }
+
+    acceptRenew(bookId){
+        for(let i=0;i<this.takenBooks.length;i++){
+            if(bookId == this.takenBooks[i].bookId){
+                this.takenBooks[i].days = 15;
+                break;
+            }
+        }
+        for(let i=0;i<this.pendingRenew.length;i++){
+            if(bookId==this.pendingRenew[i].bookId){
+                this.pendingRenew.splice(i,1);
+                return;
             }
         }
     }
 
-    viewHistory(){
+    rejectRenew(bookId){
+        for(let i=0;i<this.pendingRenew.length;i++){
+            if(bookId==this.pendingRenew[i].bookId){
+                this.pendingRenew.splice(i,1);
+                return;
+            }
+        }
+    }
 
+    renewBook(bookId,username,days){
+        for(let i=0;i<this.pendingRenew.length;i++){
+            if(bookId == this.pendingRenew[i].bookId){
+                alert('Book is already pending renew!');
+                return;
+            }
+        }
+        this.pendingRenew.push({bookId,username,days});
     }
 
     getUmService(){

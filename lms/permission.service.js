@@ -2,49 +2,28 @@ class PermissionService {
     static getRoles(){
         let roles = {
             'student': {
-                'issueBook': true,
-                'renewBook': true,
-                'returnBook': true,
-                'viewHistory': true,
-                'recommendBook': true,
-                'searchBook': true,
+                'showTaken': true,
+                'showAllTaken': false,
+                'showIssued': false,
+                'showPendingRenew': false,
                 'addBook': false,
-                'addUser': false,
-                'editUser': true,
-                'removeUser': true,
-                'acceptHold': false,
-                'acceptRenew': false,
-                'acceptReturn': false
+                'addUser': false
             },
             'employee': {
-                'issueBook': false,
-                'renewBook': false,
-                'returnBook': false,
-                'viewHistory': false,
-                'recommendBook': false,
-                'searchBook': true,
+                'showTaken': false,
+                'showAllTaken': true,
+                'showIssued': true,
+                'showPendingRenew': true,
                 'addBook': true,
-                'addUser': false,
-                'editUser': true,
-                'removeUser': true,
-                'acceptHold': true,
-                'acceptRenew': true,
-                'acceptReturn': true
+                'addUser': false
             },
             'admin': {
-                'issueBook': false,
-                'renewBook': false,
-                'returnBook': false,
-                'viewHistory': false,
-                'recommendBook': false,
-                'searchBook': false,
+                'showTaken': false,
+                'showAllTaken': false,
+                'showIssued': false,
+                'showPendingRenew': false,
                 'addBook': false,
-                'addUser': true,
-                'editUser': true,
-                'removeUser': true,
-                'acceptHold': false,
-                'acceptRenew': false,
-                'acceptReturn': false
+                'addUser': true
             }
         }
 

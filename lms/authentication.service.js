@@ -10,21 +10,8 @@ class AuthService {
         if(user.password === hashedPass){
             if(sessionStorage.getItem('authInfo')!=null) sessionStorage.removeItem('authInfo');
             sessionStorage.setItem('authInfo', JSON.stringify(user));
-
-            switch (user.role) {
-                case "student":
-                    window.location.replace("../management/management.html");
-                    break;
-                case 'faculty':
-                    window.location.replace("../management/management.html");
-                    break;
-                case 'employee':
-                    window.location = '../management/management.html';
-                    break;
-                case 'admin':
-                    window.location.replace("../management/management.html");
-                    break;
-            }
+            
+            window.location = '../management/management.html';
         }else{
             document.getElementById('loginError').innerHTML = 'Username or password is incorrect';
         }

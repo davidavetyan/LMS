@@ -5,7 +5,7 @@ function signup(){
         let lastName = document.getElementById('userLastName').value;
         let phone = document.getElementById('userPhone').value;
         let email = document.getElementById('userEmail').value;
-        let role = document.getElementById('role').value;
+        let role = 'student';
         let password = document.getElementById('password').value;
         document.getElementById('loginError').innerHTML = window.lms.addUser(username,firstName,lastName,phone,email,role,password);
     
