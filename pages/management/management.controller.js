@@ -144,6 +144,7 @@ const Funcs = {
             if(document.getElementById('errorInput').innerHTML==''){
                 document.getElementById('addOptionUser').innerHTML = '';
                 window.optShowUser = false;
+                document.location.reload();
             }
         }
     },
