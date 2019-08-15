@@ -9,6 +9,15 @@
     background: white;
 }
 
+#rating{
+    border-radius: 5px;
+    height: 35px;
+    width: 300px;
+    padding: 5px;
+    margin: 5px;
+    margin-left: 15px;
+}
+
 #logInfo{
     display: flex;
     justify-content: space-between;
@@ -22,6 +31,9 @@
 table {
     border-collapse: collapse;
     margin-bottom: 5px;
+    text-align: center;
+    margin-top: 10px;
+    width:100%
 }
   
 th, td {
@@ -54,6 +66,13 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.button:hover{
+    color: #fff;
+    background-color: #c82333;
+    border-color: #bd2130;
+    cursor: pointer;
 }
 
 .button-purple{
@@ -113,6 +132,13 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.button-green:hover{
+    color: #fff;
+    background-color: #218838;
+    border-color: #1e7e34;
+    cursor: pointer;
+}
+
 .button-orange{
     height: 35px;
     background: #FF8800;
@@ -133,6 +159,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     color: #fff;
     background-color: #ec971f;
     border-color: #d58512;
+    cursor: pointer;
 }
 
 .text-field{

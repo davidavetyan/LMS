@@ -5,7 +5,7 @@ class LMS {
         this.takenBooks = []; //0-not taken, 1-placed, 2-taken
     }
 
-    addBook(bookId, title, author, pageCount, description) {
+    addBook(bookId, title, author, pageCount, description, recommendations) {
         if(bookId=="" || title=="" || author=="" || pageCount==""){
             this.books.push(Book.generateRandomBook());
             this.takenBooks.push(0);
@@ -15,9 +15,24 @@ class LMS {
                     return 'Book with such ID already exists!';
                 }
             }
-            this.books.push(new Book(bookId, title, author, pageCount ,description));
+            this.books.push(new Book(bookId, title, author, pageCount ,description,recommendations));
             this.takenBooks.push(0);
             return '';
+        }
+    }
+
+    addRecommendation(bookId, username, rating, message){
+        for(let book of this.books){
+            if(book.bookId == bookId){
+                for(let rec of book.recommendations){
+                    if(rec.username == username){
+                        rec.rating = rating;
+                        rec.message = message;
+                        return;
+                    }
+                }
+                book.recommendations.push(new Recommendation(username, rating, message));
+            }
         }
     }
 

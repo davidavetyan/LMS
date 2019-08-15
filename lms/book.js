@@ -1,10 +1,11 @@
 class Book {
-    constructor(bookId,title,author,pageCount,description){
+    constructor(bookId,title,author,pageCount,description,recommendations){
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.pageCount = pageCount;
         this.description = description;
+        this.recommendations = recommendations;
     }
 
     static generateRandomBook(){
@@ -13,7 +14,8 @@ class Book {
         let author = genAuthorName();
         let pageCount = Math.floor(Math.random()*250)+100;
         let description = genRandomDesc();
-        return new Book(bookId,title,author,pageCount, description);
+        let recommendations = [];
+        return new Book(bookId,title,author,pageCount, description, recommendations);
     }
 }
 

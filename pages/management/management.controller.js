@@ -25,7 +25,7 @@ const Funcs = {
     genRandomBooks() {
         if (window.lms != undefined) {
             for (let i = 0; i < 20; i++) {
-                window.lms.addBook("", "", "", "", "");
+                window.lms.addBook("", "", "", "", "", []);
             }
         }
     },
@@ -73,9 +73,6 @@ const Funcs = {
                 document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDescription').value);
             }
         }
-    },
-
-    recommendBook() {
     },
 
     acceptHold() {
@@ -154,7 +151,30 @@ const Funcs = {
             if(confirm('Do you want to delete your account?')){
                 window.lms.removeUser((JSON.parse(sessionStorage.getItem('authInfo'))).username);
             }  
+        }else{
+            console.log('You can\'t delete your account, Admin!');
         }
+    },
+
+    showRecommendBook(event){
+        recBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+        if (window.recShow == false) {
+            document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><select id="rating"><option value="1">Very bad</option><option value="2">Bad</option><option value="3">Okay</option><option value="4">Good</option><option value="5">Excellent</option></select><input class="text-field" style="width: 40%" type="text" id="message" placeholder="Message"><input class="button-green" style="margin-right: 5px" type="button" onclick="Funcs.recommendBook()" value="Submit"></div>';
+            window.recShow = true;
+        } else {
+            document.getElementById('addRecommendBook').innerHTML = '';
+            window.recShow = false;
+        }
+    },
+
+    recommendBook(){
+        let rating = document.getElementById('rating').value;
+        let message = document.getElementById('message').value;
+        let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
+        window.lms.addRecommendation(recBookId,username,rating,message);
+        document.getElementById('addRecommendBook').innerHTML = '';
+        window.recShow = false;
+        recBookId = '';
     },
 
     showAllBooks() {
@@ -174,6 +194,12 @@ const Funcs = {
             document.getElementsByTagName('thead')[0].append(elem);
             elem = document.createElement('th');
             elem.innerHTML = 'Page Count';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Rating';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
             document.getElementsByTagName('thead')[0].append(elem);
             elem = document.createElement('th');
             elem.innerHTML = '';
@@ -197,10 +223,18 @@ const Funcs = {
                 elem.innerHTML = window.lms.books[i].pageCount;
                 tablerow.append(elem);
                 elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].pageCount;
+                tablerow.append(elem);
+                elem = document.createElement('td');
                 elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook()" value="Issue" />                ';
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.renewBook()" value="Renew" />                ';
+                elem.style.width = '10%';
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                elem.style.width = '15%';
                 tablerow.append(elem);
                 document.getElementsByTagName('tbody')[0].append(tablerow);
             }
@@ -296,10 +330,12 @@ function displayContents() {
     let user = JSON.parse(sessionStorage.getItem('authInfo'));
     window.optShowBook = false;
     window.optShowUser = false;
+    window.recShow = false;
     window.tableBookShow = false;
     window.tableUserShow = true;
     window.bookPanelShow = false;
     window.userPanelShow = false;
+    window.recBookId = '';
     if (user == null) {
         document.getElementById('logInfo').innerHTML = "You're not logged in! <a style=\"color:white\" href=\"../login/login.html\">Log in</a>";
         document.getElementById('logInfo').style.justifyContent = 'flex-start';
@@ -359,7 +395,7 @@ function loadLMS() {
                 window.lms.umService.passwords.push(lmsString.umService.passwords[i]);
             }
             for (let i = 0; i < lmsString.books.length; i++) {
-                window.lms.books.push(new Book(lmsString.books[i].bookId, lmsString.books[i].title, lmsString.books[i].author, lmsString.books[i].pageCount, lmsString.books[i].description));
+                window.lms.books.push(new Book(lmsString.books[i].bookId, lmsString.books[i].title, lmsString.books[i].author, lmsString.books[i].pageCount, lmsString.books[i].description, lmsString.books[i].recommendations));
                 window.lms.takenBooks.push(lmsString.takenBooks[i]);
             }
         }

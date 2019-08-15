@@ -7,6 +7,7 @@
     <script src="../login/login.controller.js"></script>
     <script src="../../lms/authentication.service.js"></script>
     <script src="../../lms/book.js"></script>
+    <script src="../../lms/recommendation.js"></script>
     <script src="../../lms/user.js"></script>
     <script src="../../lms/um.service.js"></script>
     <script src="../../lms/encryption.helper.js"></script>
@@ -20,8 +21,8 @@
     <div id="container">
         <div style="display: flex; flex-wrap:wrap; flex-direction:column; width: 100%;">
             <div id="bookPanel" style="display:none;width:100%;border-bottom: 1px solid rgba(0,0,0,.125);">
-                <div style="display: flex; align-items: center; justify-content: flex-start;flex-wrap:wrap;">
-                    <div style="display: flex; align-items: center; justify-content: center">
+                <div style="display: flex; align-items: flex-start; justify-content: flex-start;flex-wrap:wrap;">
+                    <div style="width: 100%; display: flex; align-items: center; justify-content: flex-start">
                         <input class="button" type="button" id="issueBook" onclick="Funcs.issueBook()"
                             value="Place Hold" />
                         <input class="button" type="button" id="renewBook" onclick="Funcs.renewBook()"
@@ -43,9 +44,12 @@
                             value="Generate Random Books" />
                         <input class="button" type="button" onclick="Funcs.showAllBooks()" value="Show Books" />
                     </div>
+
                     <div id="addOptionBook" style="display: flex;align-items: center;flex-wrap:wrap;">
                     </div>
                 </div>
+            </div>
+            <div id="addRecommendBook" style="display: flex;align-items: center;flex-wrap:wrap;width: 100%;">
             </div>
             <div id="userPanel" style="display:none;width:100%;border-bottom: 1px solid rgba(0,0,0,.125);">
                 <div style="display: flex; align-items: center; justify-content: flex-start;flex-wrap:wrap;">
@@ -58,12 +62,12 @@
                             value="Remove User" />
                     </div>
 
-                    <div id="addOptionUser" style="display: flex;align-items: center;flex-wrap:wrap;justify-content: center">
+                    <div id="addOptionUser" style="display: flex;align-items: center;flex-wrap:wrap;justify-content: space-between">
                     </div>
                 </div>
             </div>
         </div>
-        <table id="table" style="text-align: center; margin-top: 20px;width:100%">
+        <table id="table">
             <thead></thead>
             <tbody></tbody>
         </table>
