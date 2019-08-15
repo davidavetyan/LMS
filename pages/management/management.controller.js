@@ -49,7 +49,7 @@ const Funcs = {
 
     showAddBook() {
         if (window.optShowBook == false) {
-            document.getElementById('addOptionBook').innerHTML = '<input style="margin-right: 5px" type="text" id="bookId" placeholder="Book\'s ID"><input style="margin-right: 5px" type="text" id="bookTitle" placeholder="Book\'s Title"><input style="margin-right: 5px" type="text" id="bookAuthor" placeholder="Book\'s Author"><input style="margin-right: 5px" type="text" id="bookDesc" placeholder="Book\'s Description"><input style="margin-right: 5px" type="text" id="bookPageCount" placeholder="Page Count"><input style="margin-right: 5px" class="button-orange" type="button" onclick="Funcs.addBook()" value="Add"><div id="errorInput" style="color:red;"></div>';
+            document.getElementById('addOptionBook').innerHTML = '<input class="text-field" type="text" id="bookId" placeholder="Book\'s ID"><input class="text-field" type="text" id="bookTitle" placeholder="Book\'s Title"><input class="text-field" type="text" id="bookAuthor" placeholder="Book\'s Author"><input class="text-field" type="text" id="bookDesc" placeholder="Book\'s Description"><input class="text-field" type="text" id="bookPageCount" placeholder="Page Count"><input class="button-orange" type="button" onclick="Funcs.addBook()" value="Add"><div id="errorInput" style="color:red;"></div>';
             window.optShowBook = true;
         } else {
             document.getElementById('addOptionBook').innerHTML = '';
