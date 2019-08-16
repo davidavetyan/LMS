@@ -7,43 +7,85 @@ class LMS {
         this.pendingRenew = [];
     }
 
-    // combineBooks() {
-    //     let lmsBooks = new Set();
-    //     for (let book of this.books) {
-    //         let str = "";
-    //         str = str.concat(book.author, "-", book.title);
-    //         lmsBooks.add(str);
-    //     }
-    //     return lmsBooks;
-    //  }
+    combineBooks() {
+        let lmsBooks = new Set();
+        for (let book of this.books) {
+            let str = "";
+            str = str.concat(book.author, "-", book.title);
+            lmsBooks.add(str);
+        }
+        return lmsBooks;
+     }
 
-    // getTopBooks() {
-    //     let s = new Set();
-    //     s = this.combineBooks();
-    //     let bookCount = [];
-    //     let obj = {
-    //         author: "",
-    //         title: "",
-    //         count: 0
-    //     }
-    //     for (let it = s.values(), val = null; val = it.next().value;) {
-    //         for (let book of this.books) {
-    //             if (obj.author === "") {
-    //                 obj.author = book.author;
-    //                 obj.title = book.title;
-    //             }
-    //             let str = "";
-    //             str = str.concat(book.author, "-", book.title);
-    //             if (val === str)
-    //                 ++obj.count;
-    //         }
-    //         bookCount.push(obj);
-    //         obj.author = "";
-    //         obj.title = "";
-    //         obj.count = 0;
-    //     }
-    //     return bookCount;
-    // }
+    getTopBooks() {
+        let s = new Set();
+        s = this.combineBooks();
+        let bookCount = [];
+        for (let it = s.values(), val = null; val = it.next().value;) {
+            let obj = {
+                author: val.split('-')[0],
+                title: val.split('-')[1],
+                count: 0
+            };
+            for (let book of this.books) {
+                let str = "";
+                str = str.concat(book.author, "-", book.title);
+                if (val === str){
+                    obj.count++;
+                }
+            }
+            bookCount.push(obj);
+        }
+
+        function compare( a, b ) {
+            if ( a.count > b.count ){
+              return -1;
+            }
+            if ( a.count < b.count ){
+              return 1;
+            }
+            return 0;
+          }
+        
+        bookCount.sort(compare);
+
+        return bookCount;
+    }
+
+    getTopTakenBooks() {
+        let s = new Set();
+        s = this.combineBooks();
+        let bookCount = [];
+        for (let it = s.values(), val = null; val = it.next().value;) {
+            let obj = {
+                author: val.split('-')[0],
+                title: val.split('-')[1],
+                taken: 0
+            };
+            for (let book of this.books) {
+                let str = "";
+                str = str.concat(book.author, "-", book.title);
+                if (val === str){
+                    obj.taken = obj.taken + book.takenNum;
+                }
+            }
+            bookCount.push(obj);
+        }
+
+        function compare( a, b ) {
+            if ( a.taken > b.taken ){
+              return -1;
+            }
+            if ( a.taken < b.taken ){
+              return 1;
+            }
+            return 0;
+          }
+        
+        bookCount.sort(compare);
+
+        return bookCount;
+    }
 
     addBook(bookId, title, author, pageCount, description, recommendations, takenNum) {
         if (bookId == "" || title == "" || author == "" || pageCount == "") {

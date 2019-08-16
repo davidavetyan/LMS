@@ -58,14 +58,16 @@ const Funcs = {
     },
 
     addBook() {
-        if (window.lms != undefined) {
-            if (document.getElementById('bookId').value == "" || document.getElementById('bookTitle').value == "" || document.getElementById('bookAuthor').value == "" || document.getElementById('bookPageCount').value == "" || document.getElementById('bookDescription').value) {
-                document.getElementById('errorInput').innerHTML = "Invalid parameters";
-            }
-            else {
-                document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDescription').value, [], 0);
-            }
-        }
+        // if (window.lms != undefined) {
+        //     if (document.getElementById('bookId').value == "" || document.getElementById('bookTitle').value == "" || document.getElementById('bookAuthor').value == "" || document.getElementById('bookPageCount').value == "" || document.getElementById('bookDesc').value) {
+        //         document.getElementById('errorInput').innerHTML = "Invalid parameters";
+        //     }
+        //     else {
+        //         document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDescription').value, [], 0);
+        //     }
+        // }
+        document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDesc').value, [], 0);
+        document.location.reload();
     },
 
     removeBook(event){
@@ -681,7 +683,14 @@ const Funcs = {
     },
 
     showTopBooks() {
-        this.booksArr = window.lms.getTopBooks();
+        let booksArr = window.lms.getTopBooks();
+        let cnt = 0;
+
+        if(booksArr.length >= 10){
+            cnt = 10;
+        }else{
+            cnt = booksArr.length;
+        }
 
         if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
@@ -704,7 +713,7 @@ const Funcs = {
             elem.innerHTML = '';
             document.getElementsByTagName('thead')[0].append(elem);
 
-            for (let i = 0; i < booksArr.length; i++) {
+            for (let i = 0; i < cnt; i++) {
                 let tablerow = document.createElement('tr');
                 elem = document.createElement('td');
                 elem.innerHTML =booksArr[i].title;
@@ -713,7 +722,7 @@ const Funcs = {
                 elem.innerHTML =booksArr[i].author;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML = bookArr[i].count;
+                elem.innerHTML = booksArr[i].count;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
@@ -773,6 +782,60 @@ const Funcs = {
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = String(booksArr[i].bookRating);
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                elem.style.width = '10%';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
+            }
+        }
+    },
+
+    showTopTakenBooks(){
+        let booksArr = window.lms.getTopTakenBooks();
+        let cnt = 0;
+
+        if(booksArr.length >= 10){
+            cnt = 10;
+        }else{
+            cnt = booksArr.length;
+        }
+
+        if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            window.tableBookShow = true;
+            window.tableUserShow = false;
+            let elem = document.createElement('th');
+            elem.innerHTML = 'Title';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Author';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '&times;Taken';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+
+            for (let i = 0; i < cnt; i++) {
+                let tablerow = document.createElement('tr');
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].title;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].author;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = booksArr[i].taken;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
