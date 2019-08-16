@@ -49,14 +49,13 @@ const Funcs = {
 
     showEditBook(){
         currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
-        if (window.editShow == false) {
-            document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><input class="text-field" type="text" id="bookTitle" placeholder="Book\'s Title"><input class="text-field" type="text" id="bookAuthor" placeholder="Book\'s Author"><input class="text-field" type="text" id="bookDesc" placeholder="Book\'s Description"><input class="text-field" type="text" id="bookPageCount" placeholder="Page Count"><input class="button-orange" type="button" onclick="Funcs.editBook()" value="Edit"></div>';
-            window.editShow = true;
-            window.recShow = false;
-        } else {
-            document.getElementById('addRecommendBook').innerHTML = '';
-            window.editShow = false;
-        }
+        document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><input class="text-field" type="text" id="bookTitle" placeholder="Book\'s Title"><input class="text-field" type="text" id="bookAuthor" placeholder="Book\'s Author"><input class="text-field" type="text" id="bookDesc" placeholder="Book\'s Description"><input class="text-field" type="text" id="bookPageCount" placeholder="Page Count"><input class="button-orange" type="button" onclick="Funcs.editBook()" value="Edit"><input class="button" type="button" onclick="Funcs.closeEditBook()" value="Close &times;"></div>';
+        window.editShow = true;
+        window.recShow = false;
+    },
+
+    closeEditBook(){
+        document.getElementById('addRecommendBook').innerHTML = '';
     },
 
     editBook(){
