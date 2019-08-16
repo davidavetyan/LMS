@@ -25,7 +25,7 @@ const Funcs = {
     genRandomBooks() {
         if (window.lms != undefined) {
             for (let i = 0; i < 20; i++) {
-                window.lms.addBook("", "", "", "", "", []);
+                window.lms.addBook("", "", "", "", "", [], 0);
             }
         }
     },
@@ -513,7 +513,7 @@ const Funcs = {
                     elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
                     tablerow.append(elem);
                     elem = document.createElement('td');
-                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                    elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
                     elem.style.width = '10%';
                     tablerow.append(elem);
                     document.getElementsByTagName('tbody')[0].append(tablerow);
@@ -680,33 +680,151 @@ const Funcs = {
         }
     },
 
+    showTopBooks() {
+        this.booksArr = window.lms.getTopBooks();
+
+        if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            window.tableBookShow = true;
+            window.tableUserShow = false;
+            let elem = document.createElement('th');
+            elem.innerHTML = 'Title';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Author';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Count';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+
+            for (let i = 0; i < booksArr.length; i++) {
+                let tablerow = document.createElement('tr');
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].title;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].author;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = bookArr[i].count;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                elem.style.width = '10%';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
+            }
+        }
+    },
+
+    showTopRatedBooks(){
+        this.booksArr = window.lms.getTopRatedBooks();
+
+        if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            window.tableBookShow = true;
+            window.tableUserShow = false;
+            let elem = document.createElement('th');
+            elem.innerHTML = 'ID';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Title';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Author';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Page Count';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Rating';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+
+            for (let i = 0; i < booksArr.length; i++) {
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].bookId;
+                let tablerow = document.createElement('tr');
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].title;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].author;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML =booksArr[i].pageCount;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = String(booksArr[i].bookRating);
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                elem.style.width = '10%';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
+            }
+        }
+    },
+
     showBookPanel() {
-        if (window.bookPanelShow == false && window.userPanelShow == true) {
-            document.getElementById('bookPanel').style.display = 'inline';
+        if (window.bookPanelShow == false) {
             document.getElementById('userPanel').style.display = 'none';
+            document.getElementById('bookPanel').style.display = 'inline';
+            document.getElementById('analyticsPanel').style.display = 'none';
             window.bookPanelShow = true;
             window.userPanelShow = false;
-        } else if (window.bookPanelShow == false && window.userPanelShow == false) {
-            document.getElementById('bookPanel').style.display = 'inline';
-            window.bookPanelShow = true;
-        } else if (window.bookPanelShow == true && window.userPanelShow == false) {
+            window.analyticsPanelShow = false;
+        }  else {
             document.getElementById('bookPanel').style.display = 'none';
             window.bookPanelShow = false;
         }
     },
 
     showUserPanel() {
-        if (window.userPanelShow == false && window.bookPanelShow == true) {
+        if (window.userPanelShow == false) {
             document.getElementById('userPanel').style.display = 'inline';
             document.getElementById('bookPanel').style.display = 'none';
+            document.getElementById('analyticsPanel').style.display = 'none';
             window.bookPanelShow = false;
             window.userPanelShow = true;
-        } else if (window.userPanelShow == true && window.bookPanelShow == false) {
+            window.analyticsPanelShow = false;
+        }  else {
             document.getElementById('userPanel').style.display = 'none';
             window.userPanelShow = false;
-        } else if (window.userPanelShow == false && window.bookPanelShow == false) {
-            document.getElementById('userPanel').style.display = 'inline';
-            window.userPanelShow = true;
+        }
+    },
+
+    showAnalyticsPanel() {
+        if (window.analyticsPanelShow == false) {
+            document.getElementById('userPanel').style.display = 'none';
+            document.getElementById('bookPanel').style.display = 'none';
+            document.getElementById('analyticsPanel').style.display = 'inline';
+            window.bookPanelShow = false;
+            window.userPanelShow = false;
+            window.analyticsPanelShow = true;
+        }  else {
+            document.getElementById('analyticsPanel').style.display = 'none';
+            window.analyticsPanelShow = false;
         }
     }
 };
@@ -720,7 +838,10 @@ function displayContents() {
     window.tableUserShow = true;
     window.bookPanelShow = false;
     window.userPanelShow = false;
+    window.analyticsPanelShow = false;
     window.currBookId = '';
+    window.currBookTitle = '';
+    window.currBookAuthor = '';
     if (user == null) {
         document.getElementById('logInfo').innerHTML = "You're not logged in! <a style=\"color:white\" href=\"../login/login.html\">Log in</a>";
         document.getElementById('logInfo').style.justifyContent = 'flex-start';
@@ -747,6 +868,13 @@ function displayContents() {
         b.classList.add("button-orange");
         b.id = "userManageButton";
         b.addEventListener('click', function () { Funcs.showUserPanel(); Funcs.showAllUsers() });
+        elem.append(b);
+        document.getElementById('logInfo').append(elem);
+        b = document.createElement('button');
+        b.innerHTML = 'Analytics';
+        b.classList.add("button-purple");
+        b.id = "analyticsButton";
+        b.addEventListener('click', function () { Funcs.showAnalyticsPanel() });
         elem.append(b);
         document.getElementById('logInfo').append(elem);
         elem = document.createElement('div');
@@ -785,6 +913,7 @@ function loadLMS() {
             window.lms.issuedBooks = lmsString.issuedBooks;
             window.lms.takenBooks = lmsString.takenBooks;
             window.lms.pendingRenew = lmsString.pendingRenew;
+            window.lms.recs = lmsString.recs;
         }
     }
 
