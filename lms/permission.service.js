@@ -7,6 +7,7 @@ class PermissionService {
                 'showIssued': false,
                 'showPendingRenew': false,
                 'addBook': false,
+                'editBook':false,
                 'addUser': false
             },
             'employee': {
@@ -15,6 +16,7 @@ class PermissionService {
                 'showIssued': true,
                 'showPendingRenew': true,
                 'addBook': true,
+                'editBook': true,
                 'addUser': false
             },
             'admin': {
@@ -23,6 +25,7 @@ class PermissionService {
                 'showIssued': false,
                 'showPendingRenew': false,
                 'addBook': false,
+                'editBook': false,
                 'addUser': true
             }
         }

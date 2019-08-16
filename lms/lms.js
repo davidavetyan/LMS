@@ -127,6 +127,28 @@ class LMS {
     //     }
     // }
 
+    editBook(bookId,title,author,description,pageCount){
+        for(let book of this.issuedBooks){
+            if(book.bookId == bookId){
+                alert('Can\'t edit the bookbecause it was issued!');
+            }
+        }
+        for(let book of this.takenBooks){
+            if(book.bookId == bookId){
+                alert('Can\'t edit the bookbecause it has been taken!');
+            }
+        }
+        for(let book of this.books){
+            if(book.bookId == bookId){
+                if(title!="") book.title = title;
+                if(author!="") book.author = author;
+                if(description!="") book.description = description;
+                if(pageCount!="") book.pageCount = pageCount;
+                document.location.reload();
+            }
+        }
+    }
+
     removeBook(bookId) {
         for (let i = 0; i < this.takenBooks.length; i++) {
             if (this.takenBooks[i].bookId == bookId) {

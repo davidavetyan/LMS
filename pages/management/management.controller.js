@@ -47,6 +47,29 @@ const Funcs = {
         currBookId = '';
     },
 
+    showEditBook(){
+        currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
+        if (window.editShow == false) {
+            document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><input class="text-field" type="text" id="bookTitle" placeholder="Book\'s Title"><input class="text-field" type="text" id="bookAuthor" placeholder="Book\'s Author"><input class="text-field" type="text" id="bookDesc" placeholder="Book\'s Description"><input class="text-field" type="text" id="bookPageCount" placeholder="Page Count"><input class="button-orange" type="button" onclick="Funcs.editBook()" value="Edit"></div>';
+            window.editShow = true;
+            window.recShow = false;
+        } else {
+            document.getElementById('addRecommendBook').innerHTML = '';
+            window.editShow = false;
+        }
+    },
+
+    editBook(){
+        let bookTitle = document.getElementById('bookTitle').value;
+        let bookAuthor = document.getElementById('bookAuthor').value;
+        let bookDesc = document.getElementById('bookDesc').value;
+        let bookPageCount = document.getElementById('bookPageCount').value;
+        if(bookTitle!="" || bookAuthor!="" || bookDesc!="" || bookPageCount!="") window.lms.editBook(currBookId,bookTitle,bookAuthor,bookDesc,bookPageCount);
+        document.getElementById('addRecommendBook').innerHTML = '';
+        window.editShow = false;
+        currBookId = '';
+    },
+
     showAddBook() {
         if (window.optShowBook == false) {
             document.getElementById('addOptionBook').innerHTML = '<input class="text-field" type="text" id="bookId" placeholder="Book\'s ID"><input class="text-field" type="text" id="bookTitle" placeholder="Book\'s Title"><input class="text-field" type="text" id="bookAuthor" placeholder="Book\'s Author"><input class="text-field" type="text" id="bookDesc" placeholder="Book\'s Description"><input class="text-field" type="text" id="bookPageCount" placeholder="Page Count"><input class="button-orange" type="button" onclick="Funcs.addBook()" value="Add"><div id="errorInput" style="color:red;"></div>';
@@ -58,15 +81,14 @@ const Funcs = {
     },
 
     addBook() {
-        // if (window.lms != undefined) {
-        //     if (document.getElementById('bookId').value == "" || document.getElementById('bookTitle').value == "" || document.getElementById('bookAuthor').value == "" || document.getElementById('bookPageCount').value == "" || document.getElementById('bookDesc').value) {
-        //         document.getElementById('errorInput').innerHTML = "Invalid parameters";
-        //     }
-        //     else {
-        //         document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDescription').value, [], 0);
-        //     }
-        // }
-        document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDesc').value, [], 0);
+        if (window.lms != undefined) {
+            if (document.getElementById('bookId').value == "" || document.getElementById('bookTitle').value == "" || document.getElementById('bookAuthor').value == "" || document.getElementById('bookPageCount').value == "" || document.getElementById('bookDesc').value=="") {
+                document.getElementById('errorInput').innerHTML = "Invalid parameters";
+            }
+            else {
+                document.getElementById('errorInput').innerHTML = window.lms.addBook(document.getElementById('bookId').value, document.getElementById('bookTitle').value, document.getElementById('bookAuthor').value, document.getElementById('bookPageCount').value, document.getElementById('bookDesc').value, [], 0);
+            }
+        }
         document.location.reload();
     },
 
@@ -205,6 +227,7 @@ const Funcs = {
         if (window.recShow == false) {
             document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><select id="rating"><option value="1">Very bad</option><option value="2">Bad</option><option value="3">Okay</option><option value="4">Good</option><option value="5">Excellent</option></select><input class="text-field" style="width: 40%" type="text" id="message" placeholder="Message"><input class="button-green" style="margin-right: 5px" type="button" onclick="Funcs.recommendBook()" value="Submit"></div>';
             window.recShow = true;
+            window.editShow = false;
         } else {
             document.getElementById('addRecommendBook').innerHTML = '';
             window.recShow = false;
@@ -547,6 +570,9 @@ const Funcs = {
                 elem = document.createElement('th');
                 elem.innerHTML = '';
                 document.getElementsByTagName('thead')[0].append(elem);
+                elem = document.createElement('th');
+                elem.innerHTML = '';
+                document.getElementsByTagName('thead')[0].append(elem);
     
                 for (let i = 0; i < window.lms.books.length; i++) {
                     elem = document.createElement('td');
@@ -567,6 +593,12 @@ const Funcs = {
                     tablerow.append(elem);
                     elem = document.createElement('td');
                     elem.innerHTML = '<input class="button" type="button" onclick="Funcs.removeBook(event)" value="Remove" />';
+                    elem.style.width = '15%';
+                    tablerow.append(elem);
+                    document.getElementsByTagName('tbody')[0].append(tablerow);
+                    elem = document.createElement('td');
+                    elem.innerHTML = '<input style="width:100px" class="button-green" type="button" onclick="Funcs.showEditBook(event)" value="Edit" />';
+                    elem.style.width = '15%';
                     tablerow.append(elem);
                     document.getElementsByTagName('tbody')[0].append(tablerow);
                 }
@@ -897,6 +929,7 @@ function displayContents() {
     window.optShowBook = false;
     window.optShowUser = false;
     window.recShow = false;
+    window.editShow = false;
     window.tableBookShow = false;
     window.tableUserShow = true;
     window.bookPanelShow = false;
