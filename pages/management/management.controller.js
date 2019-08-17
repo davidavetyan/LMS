@@ -224,6 +224,7 @@ const Funcs = {
     showRecommendBook(event) {
         currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
         if (window.recShow == false) {
+            window.scrollTo(0, 0);
             document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><select id="rating"><option value="1">Very bad</option><option value="2">Bad</option><option value="3">Okay</option><option value="4">Good</option><option value="5">Excellent</option></select><input class="text-field" style="width: 40%" type="text" id="message" placeholder="Message"><input class="button-green" style="margin-right: 5px" type="button" onclick="Funcs.recommendBook()" value="Submit"></div>';
             window.recShow = true;
             window.editShow = false;
@@ -768,7 +769,14 @@ const Funcs = {
     },
 
     showTopRatedBooks(){
-        this.booksArr = window.lms.getTopRatedBooks();
+        let booksArr = window.lms.getTopRatedBooks();
+        let cnt = 0;
+
+        if(booksArr.length >= 10){
+            cnt = 10;
+        }else{
+            cnt = booksArr.length;
+        }
 
         if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
@@ -776,16 +784,10 @@ const Funcs = {
             window.tableBookShow = true;
             window.tableUserShow = false;
             let elem = document.createElement('th');
-            elem.innerHTML = 'ID';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
             elem.innerHTML = 'Title';
             document.getElementsByTagName('thead')[0].append(elem);
             elem = document.createElement('th');
             elem.innerHTML = 'Author';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Page Count';
             document.getElementsByTagName('thead')[0].append(elem);
             elem = document.createElement('th');
             elem.innerHTML = 'Rating';
@@ -797,11 +799,8 @@ const Funcs = {
             elem.innerHTML = '';
             document.getElementsByTagName('thead')[0].append(elem);
 
-            for (let i = 0; i < booksArr.length; i++) {
-                elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].bookId;
+            for (let i = 0; i < cnt; i++) {
                 let tablerow = document.createElement('tr');
-                tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML =booksArr[i].title;
                 tablerow.append(elem);
@@ -809,10 +808,7 @@ const Funcs = {
                 elem.innerHTML =booksArr[i].author;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].pageCount;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = String(booksArr[i].bookRating);
+                elem.innerHTML = booksArr[i].rating;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';

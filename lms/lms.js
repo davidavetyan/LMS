@@ -87,6 +87,48 @@ class LMS {
         return bookCount;
     }
 
+    getTopRatedBooks(){
+        let s = new Set();
+        for (let book of this.books) {
+            let str = "";
+            str = str.concat(book.author, "-", book.title);
+            if(book.recommendations.length != 0) s.add(str);
+        }
+        let bookCount = [];
+        for (let it = s.values(), val = null; val = it.next().value;) {
+            let obj = {
+                author: val.split('-')[0],
+                title: val.split('-')[1],
+                count: 0,
+                rating: 0
+            };
+            for (let book of this.books) {
+                let str = "";
+                str = str.concat(book.author, "-", book.title);
+                if (val === str){
+                    obj.rating = obj.rating + book.getRatingOfBook();
+                    obj.count++;
+                }
+            }
+            obj.rating = (obj.rating / obj.count).toFixed(1);
+            bookCount.push(obj);
+        }
+
+        function compare( a, b ) {
+            if ( a.rating > b.rating ){
+              return -1;
+            }
+            if ( a.rating < b.rating ){
+              return 1;
+            }
+            return 0;
+          }
+        
+        bookCount.sort(compare);
+
+        return bookCount;
+    }
+
     addBook(bookId, title, author, pageCount, description, recommendations, takenNum) {
         if (bookId == "" || title == "" || author == "" || pageCount == "") {
             this.books.push(Book.generateRandomBook());
