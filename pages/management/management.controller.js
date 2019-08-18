@@ -244,18 +244,18 @@ const Funcs = {
         currBookId = '';
     },
 
-    addChangeRole(event){
+    addChangeRole(event) {
         let a = event.target.parentNode.parentNode.firstChild.innerHTML;
-        if(window.showSave == false){
+        if (window.showSave == false) {
             window.showSave = true;
             document.getElementById('saveButton').style.display = 'inline';
         }
-        if(event.target.classList.contains('button-green')){
+        if (event.target.classList.contains('button-green')) {
             event.target.classList.remove('button-green');
-            event.target.classList.add('button'); 
+            event.target.classList.add('button');
             event.target.value = 'Off';
             window.perms[a] = false;
-        }else{
+        } else {
             event.target.classList.remove('button');
             event.target.classList.add('button-green');
             event.target.value = 'On';
@@ -263,7 +263,7 @@ const Funcs = {
         }
     },
 
-    changeRole(){
+    changeRole() {
         window.lms.permissionService.roles[currGroup] = window.perms;
         document.location.reload();
     },
@@ -513,168 +513,160 @@ const Funcs = {
     showAllBooks() {
         let role = (JSON.parse(sessionStorage.getItem('authInfo'))).role;
         if (role == 'student') {
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            let elem = document.createElement('th');
+            elem.innerHTML = 'ID';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Title';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Author';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Page Count';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Rating';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
 
-            if (window.tableBookShow == false) {
-                document.getElementsByTagName('thead')[0].innerHTML = '';
-                document.getElementsByTagName('tbody')[0].innerHTML = '';
-                window.tableBookShow = true;
-                window.tableUserShow = false;
-                let elem = document.createElement('th');
-                elem.innerHTML = 'ID';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Title';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Author';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Page Count';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Rating';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = '';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = '';
-                document.getElementsByTagName('thead')[0].append(elem);
-
-                for (let i = 0; i < window.lms.books.length; i++) {
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].bookId;
-                    let tablerow = document.createElement('tr');
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].title;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].author;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].pageCount;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
-                    elem.style.width = '10%';
-                    tablerow.append(elem);
-                    document.getElementsByTagName('tbody')[0].append(tablerow);
-                }
+            for (let i = 0; i < window.lms.books.length; i++) {
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].bookId;
+                let tablerow = document.createElement('tr');
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].title;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].author;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].pageCount;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+                elem.style.width = '10%';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
             }
+
+            window.tableBookShow = true;
+            window.tableUserShow = false;
 
         } else if (role == 'employee') {
 
-            if (window.tableBookShow == false) {
-                document.getElementsByTagName('thead')[0].innerHTML = '';
-                document.getElementsByTagName('tbody')[0].innerHTML = '';
-                window.tableBookShow = true;
-                window.tableUserShow = false;
-                let elem = document.createElement('th');
-                elem.innerHTML = 'ID';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Title';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Author';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Page Count';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Rating';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = '';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = '';
-                document.getElementsByTagName('thead')[0].append(elem);
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            let elem = document.createElement('th');
+            elem.innerHTML = 'ID';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Title';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Author';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Page Count';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Rating';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = '';
+            document.getElementsByTagName('thead')[0].append(elem);
 
-                for (let i = 0; i < window.lms.books.length; i++) {
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].bookId;
-                    let tablerow = document.createElement('tr');
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].title;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].author;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].pageCount;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = '<input class="button" type="button" onclick="Funcs.removeBook(event)" value="Remove" />';
-                    elem.style.width = '15%';
-                    tablerow.append(elem);
-                    document.getElementsByTagName('tbody')[0].append(tablerow);
-                    elem = document.createElement('td');
-                    elem.innerHTML = '<input style="width:100px" class="button-green" type="button" onclick="Funcs.showEditBook(event)" value="Edit" />';
-                    elem.style.width = '15%';
-                    tablerow.append(elem);
-                    document.getElementsByTagName('tbody')[0].append(tablerow);
-                }
+            for (let i = 0; i < window.lms.books.length; i++) {
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].bookId;
+                let tablerow = document.createElement('tr');
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].title;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].author;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].pageCount;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input class="button" type="button" onclick="Funcs.removeBook(event)" value="Remove" />';
+                elem.style.width = '15%';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
+                elem = document.createElement('td');
+                elem.innerHTML = '<input style="width:100px" class="button-green" type="button" onclick="Funcs.showEditBook(event)" value="Edit" />';
+                elem.style.width = '15%';
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
             }
 
+            window.tableBookShow = true;
+            window.tableUserShow = false;
         } else if (role == 'admin') {
 
-            if (window.tableBookShow == false) {
-                document.getElementsByTagName('thead')[0].innerHTML = '';
-                document.getElementsByTagName('tbody')[0].innerHTML = '';
-                window.tableBookShow = true;
-                window.tableUserShow = false;
-                let elem = document.createElement('th');
-                elem.innerHTML = 'ID';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Title';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Author';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Page Count';
-                document.getElementsByTagName('thead')[0].append(elem);
-                elem = document.createElement('th');
-                elem.innerHTML = 'Rating';
-                document.getElementsByTagName('thead')[0].append(elem);
+            document.getElementsByTagName('thead')[0].innerHTML = '';
+            document.getElementsByTagName('tbody')[0].innerHTML = '';
+            let elem = document.createElement('th');
+            elem.innerHTML = 'ID';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Title';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Author';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Page Count';
+            document.getElementsByTagName('thead')[0].append(elem);
+            elem = document.createElement('th');
+            elem.innerHTML = 'Rating';
+            document.getElementsByTagName('thead')[0].append(elem);
 
-                for (let i = 0; i < window.lms.books.length; i++) {
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].bookId;
-                    let tablerow = document.createElement('tr');
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].title;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].author;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = window.lms.books[i].pageCount;
-                    tablerow.append(elem);
-                    elem = document.createElement('td');
-                    elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
-                    tablerow.append(elem);
-                    document.getElementsByTagName('tbody')[0].append(tablerow);
-                }
+            for (let i = 0; i < window.lms.books.length; i++) {
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].bookId;
+                let tablerow = document.createElement('tr');
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].title;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].author;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = window.lms.books[i].pageCount;
+                tablerow.append(elem);
+                elem = document.createElement('td');
+                elem.innerHTML = String(window.lms.books[i].getRatingOfBook());
+                tablerow.append(elem);
+                document.getElementsByTagName('tbody')[0].append(tablerow);
             }
 
+            window.tableBookShow = true;
+            window.tableUserShow = false;
         }
-
-
     },
 
     showAllUsers() {
@@ -748,48 +740,47 @@ const Funcs = {
             cnt = booksArr.length;
         }
 
-        if (window.tableBookShow == false) {
-            document.getElementsByTagName('thead')[0].innerHTML = '';
-            document.getElementsByTagName('tbody')[0].innerHTML = '';
-            window.tableBookShow = true;
-            window.tableUserShow = false;
-            let elem = document.createElement('th');
-            elem.innerHTML = 'Title';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Author';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Count';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        window.tableBookShow = true;
+        window.tableUserShow = false;
+        let elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Count';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
 
-            for (let i = 0; i < cnt; i++) {
-                let tablerow = document.createElement('tr');
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].title;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].author;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].count;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
-                elem.style.width = '10%';
-                tablerow.append(elem);
-                document.getElementsByTagName('tbody')[0].append(tablerow);
-            }
+        for (let i = 0; i < cnt; i++) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].title;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].author;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].count;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+            elem.style.width = '10%';
+            tablerow.append(elem);
+            document.getElementsByTagName('tbody')[0].append(tablerow);
         }
+
     },
 
     showTopRatedBooks() {
@@ -802,48 +793,47 @@ const Funcs = {
             cnt = booksArr.length;
         }
 
-        if (window.tableBookShow == false) {
-            document.getElementsByTagName('thead')[0].innerHTML = '';
-            document.getElementsByTagName('tbody')[0].innerHTML = '';
-            window.tableBookShow = true;
-            window.tableUserShow = false;
-            let elem = document.createElement('th');
-            elem.innerHTML = 'Title';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Author';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Rating';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        window.tableBookShow = true;
+        window.tableUserShow = false;
+        let elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Rating';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
 
-            for (let i = 0; i < cnt; i++) {
-                let tablerow = document.createElement('tr');
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].title;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].author;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].rating;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
-                elem.style.width = '10%';
-                tablerow.append(elem);
-                document.getElementsByTagName('tbody')[0].append(tablerow);
-            }
+        for (let i = 0; i < cnt; i++) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].title;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].author;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].rating;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+            elem.style.width = '10%';
+            tablerow.append(elem);
+            document.getElementsByTagName('tbody')[0].append(tablerow);
         }
+
     },
 
     showTopTakenBooks() {
@@ -856,48 +846,47 @@ const Funcs = {
             cnt = booksArr.length;
         }
 
-        if (window.tableBookShow == false) {
-            document.getElementsByTagName('thead')[0].innerHTML = '';
-            document.getElementsByTagName('tbody')[0].innerHTML = '';
-            window.tableBookShow = true;
-            window.tableUserShow = false;
-            let elem = document.createElement('th');
-            elem.innerHTML = 'Title';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = 'Author';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '&times;Taken';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
-            elem = document.createElement('th');
-            elem.innerHTML = '';
-            document.getElementsByTagName('thead')[0].append(elem);
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        window.tableBookShow = true;
+        window.tableUserShow = false;
+        let elem = document.createElement('th');
+        elem.innerHTML = 'Title';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Author';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '&times;Taken';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = '';
+        document.getElementsByTagName('thead')[0].append(elem);
 
-            for (let i = 0; i < cnt; i++) {
-                let tablerow = document.createElement('tr');
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].title;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].author;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = booksArr[i].taken;
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
-                tablerow.append(elem);
-                elem = document.createElement('td');
-                elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
-                elem.style.width = '10%';
-                tablerow.append(elem);
-                document.getElementsByTagName('tbody')[0].append(tablerow);
-            }
+        for (let i = 0; i < cnt; i++) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].title;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].author;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = booksArr[i].taken;
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button-purple" type="button" onclick="Funcs.issueBook(event)" value="Issue" />                ';
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button-green" type="button" onclick="Funcs.showRecommendBook(event)" value="Recommend" />                ';
+            elem.style.width = '10%';
+            tablerow.append(elem);
+            document.getElementsByTagName('tbody')[0].append(tablerow);
         }
+
     },
 
     showBookPanel() {
@@ -935,8 +924,8 @@ const Funcs = {
     showRoles(group) {
         let permissions = window.lms.permissionService.roles[group];
         window.currGroup = group;
-        window.perms = Object.assign({},permissions);
-        if(window.showSave == true){
+        window.perms = Object.assign({}, permissions);
+        if (window.showSave == true) {
             window.showSave = false;
             document.getElementById('saveButton').style.display = 'none';
         }
@@ -958,7 +947,7 @@ const Funcs = {
             elem.style.width = '50%';
             tablerow.append(elem);
             elem = document.createElement('td');
-            elem.innerHTML = '<input class="button'+ (permissions[role]?'-green':'') +'" type="button" onclick="Funcs.addChangeRole(event)" value="'+ (permissions[role]?'On':'Off') + '" />';
+            elem.innerHTML = '<input class="button' + (permissions[role] ? '-green' : '') + '" type="button" onclick="Funcs.addChangeRole(event)" value="' + (permissions[role] ? 'On' : 'Off') + '" />';
             tablerow.append(elem);
             document.getElementsByTagName('tbody')[0].append(tablerow);
         }
@@ -1046,14 +1035,14 @@ function displayContents() {
         b.id = "analyticsButton";
         b.addEventListener('click', function () { Funcs.showAnalyticsPanel() });
         elem.append(b);
-        if(user.username == 'admin'){
+        if (user.username == 'admin') {
             b = document.createElement('button');
             b.innerHTML = 'Roles';
             b.classList.add("button-green");
             b.id = "rolesButton";
             b.addEventListener('click', function () { Funcs.showRolePanel(); Funcs.showRoles('student') });
             elem.append(b);
-            window.perms = [];    
+            window.perms = [];
             window.currGroup = '';
         }
         document.getElementById('logInfo').append(elem);
@@ -1065,8 +1054,8 @@ function displayContents() {
         let permissions = window.lms.permissionService.roles[user.role];
 
         for (let key in permissions) {
-            if (permissions[key] == false) {
-                if (document.getElementById(key) != null) document.getElementById(key).style.display = 'none';
+            if (permissions[key] == true) {
+                if (document.getElementById(key) != null) document.getElementById(key).style.display = 'inline';
             }
         }
 

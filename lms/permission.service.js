@@ -27,8 +27,4 @@ class PermissionService {
             }
         };
     }
-    
-    getRoles(){
-        return roles;
-    }
 }
