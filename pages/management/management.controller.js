@@ -43,27 +43,27 @@ const Funcs = {
         currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
         let username = (JSON.parse(sessionStorage.getItem('authInfo'))).username;
         let days = event.target.parentNode.previousSibling.innerHTML;
-        window.lms.renewBook(currBookId,username,days);
+        window.lms.renewBook(currBookId, username, days);
         currBookId = '';
     },
 
-    showEditBook(){
+    showEditBook() {
         currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
         document.getElementById('addRecommendBook').innerHTML = '<div style="width:100%"><input class="text-field" type="text" id="bookTitle" placeholder="Book\'s Title"><input class="text-field" type="text" id="bookAuthor" placeholder="Book\'s Author"><input class="text-field" type="text" id="bookDesc" placeholder="Book\'s Description"><input class="text-field" type="text" id="bookPageCount" placeholder="Page Count"><input class="button-orange" type="button" onclick="Funcs.editBook()" value="Edit"><input class="button" type="button" onclick="Funcs.closeEditBook()" value="Close &times;"></div>';
         window.editShow = true;
         window.recShow = false;
     },
 
-    closeEditBook(){
+    closeEditBook() {
         document.getElementById('addRecommendBook').innerHTML = '';
     },
 
-    editBook(){
+    editBook() {
         let bookTitle = document.getElementById('bookTitle').value;
         let bookAuthor = document.getElementById('bookAuthor').value;
         let bookDesc = document.getElementById('bookDesc').value;
         let bookPageCount = document.getElementById('bookPageCount').value;
-        if(bookTitle!="" || bookAuthor!="" || bookDesc!="" || bookPageCount!="") window.lms.editBook(currBookId,bookTitle,bookAuthor,bookDesc,bookPageCount);
+        if (bookTitle != "" || bookAuthor != "" || bookDesc != "" || bookPageCount != "") window.lms.editBook(currBookId, bookTitle, bookAuthor, bookDesc, bookPageCount);
         document.getElementById('addRecommendBook').innerHTML = '';
         window.editShow = false;
         currBookId = '';
@@ -81,7 +81,7 @@ const Funcs = {
 
     addBook() {
         if (window.lms != undefined) {
-            if (document.getElementById('bookId').value == "" || document.getElementById('bookTitle').value == "" || document.getElementById('bookAuthor').value == "" || document.getElementById('bookPageCount').value == "" || document.getElementById('bookDesc').value=="") {
+            if (document.getElementById('bookId').value == "" || document.getElementById('bookTitle').value == "" || document.getElementById('bookAuthor').value == "" || document.getElementById('bookPageCount').value == "" || document.getElementById('bookDesc').value == "") {
                 document.getElementById('errorInput').innerHTML = "Invalid parameters";
             }
             else {
@@ -91,11 +91,11 @@ const Funcs = {
         document.location.reload();
     },
 
-    removeBook(event){
-        if (confirm('Are you sure to delete this book?')) {            
+    removeBook(event) {
+        if (confirm('Are you sure to delete this book?')) {
             currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
             window.lms.removeBook(currBookId);
-            currBookId = '';   
+            currBookId = '';
             document.location.reload();
         }
     },
@@ -108,7 +108,7 @@ const Funcs = {
         document.location.reload();
     },
 
-    rejectHold(event){
+    rejectHold(event) {
         currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
 
         window.lms.rejectHold(currBookId);
@@ -132,7 +132,7 @@ const Funcs = {
         document.location.reload();
     },
 
-    rejectRenew(event){
+    rejectRenew(event) {
         currBookId = event.target.parentNode.parentNode.firstChild.innerHTML;
 
         window.lms.rejectRenew(currBookId);
@@ -164,7 +164,7 @@ const Funcs = {
             } else {
                 document.getElementById('errorInput').innerHTML = window.lms.addUser(document.getElementById('username').value, document.getElementById('userFirstName').value, document.getElementById('userLastName').value, userPhone, userEmail, userRole, userPassword);
             }
-            if(document.getElementById('errorInput').innerHTML==''){
+            if (document.getElementById('errorInput').innerHTML == '') {
                 document.getElementById('addOptionUser').innerHTML = '';
                 window.optShowUser = false;
                 document.location.reload();
@@ -242,6 +242,30 @@ const Funcs = {
         document.getElementById('addRecommendBook').innerHTML = '';
         window.recShow = false;
         currBookId = '';
+    },
+
+    addChangeRole(event){
+        let a = event.target.parentNode.parentNode.firstChild.innerHTML;
+        if(window.showSave == false){
+            window.showSave = true;
+            document.getElementById('saveButton').style.display = 'inline';
+        }
+        if(event.target.classList.contains('button-green')){
+            event.target.classList.remove('button-green');
+            event.target.classList.add('button'); 
+            event.target.value = 'Off';
+            window.perms[a] = false;
+        }else{
+            event.target.classList.remove('button');
+            event.target.classList.add('button-green');
+            event.target.value = 'On';
+            window.perms[a] = true;
+        }
+    },
+
+    changeRole(){
+        window.lms.permissionService.roles[currGroup] = window.perms;
+        document.location.reload();
     },
 
     showPendingRenew() {
@@ -372,7 +396,7 @@ const Funcs = {
         }
     },
 
-    showAllTaken(){
+    showAllTaken() {
         document.getElementsByTagName('thead')[0].innerHTML = '';
         document.getElementsByTagName('tbody')[0].innerHTML = '';
         let elem = document.createElement('th');
@@ -428,7 +452,7 @@ const Funcs = {
         }
     },
 
-    showIssued(){
+    showIssued() {
         document.getElementsByTagName('thead')[0].innerHTML = '';
         document.getElementsByTagName('tbody')[0].innerHTML = '';
         let elem = document.createElement('th');
@@ -482,15 +506,15 @@ const Funcs = {
                     document.getElementsByTagName('tbody')[0].append(tablerow);
                 }
             }
-            
+
         }
     },
 
     showAllBooks() {
         let role = (JSON.parse(sessionStorage.getItem('authInfo'))).role;
-        if(role=='student'){
+        if (role == 'student') {
 
-            if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+            if (window.tableBookShow == false) {
                 document.getElementsByTagName('thead')[0].innerHTML = '';
                 document.getElementsByTagName('tbody')[0].innerHTML = '';
                 window.tableBookShow = true;
@@ -516,7 +540,7 @@ const Funcs = {
                 elem = document.createElement('th');
                 elem.innerHTML = '';
                 document.getElementsByTagName('thead')[0].append(elem);
-    
+
                 for (let i = 0; i < window.lms.books.length; i++) {
                     elem = document.createElement('td');
                     elem.innerHTML = window.lms.books[i].bookId;
@@ -545,9 +569,9 @@ const Funcs = {
                 }
             }
 
-        }else if(role=='employee'){
+        } else if (role == 'employee') {
 
-            if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+            if (window.tableBookShow == false) {
                 document.getElementsByTagName('thead')[0].innerHTML = '';
                 document.getElementsByTagName('tbody')[0].innerHTML = '';
                 window.tableBookShow = true;
@@ -573,7 +597,7 @@ const Funcs = {
                 elem = document.createElement('th');
                 elem.innerHTML = '';
                 document.getElementsByTagName('thead')[0].append(elem);
-    
+
                 for (let i = 0; i < window.lms.books.length; i++) {
                     elem = document.createElement('td');
                     elem.innerHTML = window.lms.books[i].bookId;
@@ -604,9 +628,9 @@ const Funcs = {
                 }
             }
 
-        }else if(role=='admin'){
+        } else if (role == 'admin') {
 
-            if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+            if (window.tableBookShow == false) {
                 document.getElementsByTagName('thead')[0].innerHTML = '';
                 document.getElementsByTagName('tbody')[0].innerHTML = '';
                 window.tableBookShow = true;
@@ -626,7 +650,7 @@ const Funcs = {
                 elem = document.createElement('th');
                 elem.innerHTML = 'Rating';
                 document.getElementsByTagName('thead')[0].append(elem);
-    
+
                 for (let i = 0; i < window.lms.books.length; i++) {
                     elem = document.createElement('td');
                     elem.innerHTML = window.lms.books[i].bookId;
@@ -650,12 +674,12 @@ const Funcs = {
 
         }
 
-        
+
     },
 
     showAllUsers() {
         let role = (JSON.parse(sessionStorage.getItem('authInfo'))).role;
-        if(role!='admin'){return;}
+        if (role != 'admin') { return; }
         if (window.tableUserShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
             document.getElementsByTagName('tbody')[0].innerHTML = '';
@@ -718,13 +742,13 @@ const Funcs = {
         let booksArr = window.lms.getTopBooks();
         let cnt = 0;
 
-        if(booksArr.length >= 10){
+        if (booksArr.length >= 10) {
             cnt = 10;
-        }else{
+        } else {
             cnt = booksArr.length;
         }
 
-        if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+        if (window.tableBookShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
             document.getElementsByTagName('tbody')[0].innerHTML = '';
             window.tableBookShow = true;
@@ -748,10 +772,10 @@ const Funcs = {
             for (let i = 0; i < cnt; i++) {
                 let tablerow = document.createElement('tr');
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].title;
+                elem.innerHTML = booksArr[i].title;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].author;
+                elem.innerHTML = booksArr[i].author;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = booksArr[i].count;
@@ -768,17 +792,17 @@ const Funcs = {
         }
     },
 
-    showTopRatedBooks(){
+    showTopRatedBooks() {
         let booksArr = window.lms.getTopRatedBooks();
         let cnt = 0;
 
-        if(booksArr.length >= 10){
+        if (booksArr.length >= 10) {
             cnt = 10;
-        }else{
+        } else {
             cnt = booksArr.length;
         }
 
-        if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+        if (window.tableBookShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
             document.getElementsByTagName('tbody')[0].innerHTML = '';
             window.tableBookShow = true;
@@ -802,10 +826,10 @@ const Funcs = {
             for (let i = 0; i < cnt; i++) {
                 let tablerow = document.createElement('tr');
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].title;
+                elem.innerHTML = booksArr[i].title;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].author;
+                elem.innerHTML = booksArr[i].author;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = booksArr[i].rating;
@@ -822,17 +846,17 @@ const Funcs = {
         }
     },
 
-    showTopTakenBooks(){
+    showTopTakenBooks() {
         let booksArr = window.lms.getTopTakenBooks();
         let cnt = 0;
 
-        if(booksArr.length >= 10){
+        if (booksArr.length >= 10) {
             cnt = 10;
-        }else{
+        } else {
             cnt = booksArr.length;
         }
 
-        if (window.tableBookShow == false && window.tableUserShow == true || window.tableBookShow == true && window.tableUserShow == false) {
+        if (window.tableBookShow == false) {
             document.getElementsByTagName('thead')[0].innerHTML = '';
             document.getElementsByTagName('tbody')[0].innerHTML = '';
             window.tableBookShow = true;
@@ -856,10 +880,10 @@ const Funcs = {
             for (let i = 0; i < cnt; i++) {
                 let tablerow = document.createElement('tr');
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].title;
+                elem.innerHTML = booksArr[i].title;
                 tablerow.append(elem);
                 elem = document.createElement('td');
-                elem.innerHTML =booksArr[i].author;
+                elem.innerHTML = booksArr[i].author;
                 tablerow.append(elem);
                 elem = document.createElement('td');
                 elem.innerHTML = booksArr[i].taken;
@@ -881,10 +905,12 @@ const Funcs = {
             document.getElementById('userPanel').style.display = 'none';
             document.getElementById('bookPanel').style.display = 'inline';
             document.getElementById('analyticsPanel').style.display = 'none';
+            document.getElementById('rolePanel').style.display = 'none';
             window.bookPanelShow = true;
             window.userPanelShow = false;
             window.analyticsPanelShow = false;
-        }  else {
+            window.rolePanelShow = false;
+        } else {
             document.getElementById('bookPanel').style.display = 'none';
             window.bookPanelShow = false;
         }
@@ -895,12 +921,46 @@ const Funcs = {
             document.getElementById('userPanel').style.display = 'inline';
             document.getElementById('bookPanel').style.display = 'none';
             document.getElementById('analyticsPanel').style.display = 'none';
+            document.getElementById('rolePanel').style.display = 'none';
             window.bookPanelShow = false;
             window.userPanelShow = true;
             window.analyticsPanelShow = false;
-        }  else {
+            window.rolePanelShow = false;
+        } else {
             document.getElementById('userPanel').style.display = 'none';
             window.userPanelShow = false;
+        }
+    },
+
+    showRoles(group) {
+        let permissions = window.lms.permissionService.roles[group];
+        window.currGroup = group;
+        window.perms = Object.assign({},permissions);
+        if(window.showSave == true){
+            window.showSave = false;
+            document.getElementById('saveButton').style.display = 'none';
+        }
+        document.getElementsByTagName('thead')[0].innerHTML = '';
+        document.getElementsByTagName('tbody')[0].innerHTML = '';
+        window.tableBookShow = false;
+        window.tableUserShow = false;
+        let elem = document.createElement('th');
+        elem.innerHTML = 'Permission';
+        document.getElementsByTagName('thead')[0].append(elem);
+        elem = document.createElement('th');
+        elem.innerHTML = 'Status';
+        document.getElementsByTagName('thead')[0].append(elem);
+
+        for (let role in permissions) {
+            let tablerow = document.createElement('tr');
+            elem = document.createElement('td');
+            elem.innerHTML = role;
+            elem.style.width = '50%';
+            tablerow.append(elem);
+            elem = document.createElement('td');
+            elem.innerHTML = '<input class="button'+ (permissions[role]?'-green':'') +'" type="button" onclick="Funcs.addChangeRole(event)" value="'+ (permissions[role]?'On':'Off') + '" />';
+            tablerow.append(elem);
+            document.getElementsByTagName('tbody')[0].append(tablerow);
         }
     },
 
@@ -909,12 +969,30 @@ const Funcs = {
             document.getElementById('userPanel').style.display = 'none';
             document.getElementById('bookPanel').style.display = 'none';
             document.getElementById('analyticsPanel').style.display = 'inline';
+            document.getElementById('rolePanel').style.display = 'none';
             window.bookPanelShow = false;
             window.userPanelShow = false;
             window.analyticsPanelShow = true;
-        }  else {
+            window.rolePanelShow = false;
+        } else {
             document.getElementById('analyticsPanel').style.display = 'none';
             window.analyticsPanelShow = false;
+        }
+    },
+
+    showRolePanel() {
+        if (window.rolePanelShow == false) {
+            document.getElementById('userPanel').style.display = 'none';
+            document.getElementById('bookPanel').style.display = 'none';
+            document.getElementById('analyticsPanel').style.display = 'none';
+            document.getElementById('rolePanel').style.display = 'inline';
+            window.bookPanelShow = false;
+            window.userPanelShow = false;
+            window.analyticsPanelShow = false;
+            window.rolePanelShow = true;
+        } else {
+            document.getElementById('rolePanel').style.display = 'none';
+            window.rolePanelShow = false;
         }
     }
 };
@@ -925,11 +1003,13 @@ function displayContents() {
     window.optShowUser = false;
     window.recShow = false;
     window.editShow = false;
+    window.showSave = false;
     window.tableBookShow = false;
-    window.tableUserShow = true;
+    window.tableUserShow = false;
     window.bookPanelShow = false;
     window.userPanelShow = false;
     window.analyticsPanelShow = false;
+    window.rolePanelShow = false;
     window.currBookId = '';
     window.currBookTitle = '';
     window.currBookAuthor = '';
@@ -960,21 +1040,29 @@ function displayContents() {
         b.id = "userManageButton";
         b.addEventListener('click', function () { Funcs.showUserPanel(); Funcs.showAllUsers() });
         elem.append(b);
-        document.getElementById('logInfo').append(elem);
         b = document.createElement('button');
         b.innerHTML = 'Analytics';
         b.classList.add("button-purple");
         b.id = "analyticsButton";
         b.addEventListener('click', function () { Funcs.showAnalyticsPanel() });
         elem.append(b);
+        if(user.username == 'admin'){
+            b = document.createElement('button');
+            b.innerHTML = 'Roles';
+            b.classList.add("button-green");
+            b.id = "rolesButton";
+            b.addEventListener('click', function () { Funcs.showRolePanel(); Funcs.showRoles('student') });
+            elem.append(b);
+            window.perms = [];    
+            window.currGroup = '';
+        }
         document.getElementById('logInfo').append(elem);
         elem = document.createElement('div');
         elem.innerHTML = '<input class="button-default" type="button" value="Log out" onclick="logout()">';
         elem.style.display = 'flex';
         elem.style.alignItems = 'center';
         document.getElementById('logInfo').append(elem);
-        //console.log(user);
-        let permissions = PermissionService.getRoles()[user.role];
+        let permissions = window.lms.permissionService.roles[user.role];
 
         for (let key in permissions) {
             if (permissions[key] == false) {
@@ -991,6 +1079,7 @@ function loadLMS() {
         window.lms = new LMS();
         if (localStorage.getItem('lms') != null) {
             let lmsString = JSON.parse(localStorage.getItem('lms'));
+            window.lms.permissionService.roles = lmsString.permissionService.roles;
 
             window.lms.umService.users = [];
             window.lms.umService.passwords = [];

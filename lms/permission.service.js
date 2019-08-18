@@ -1,6 +1,6 @@
 class PermissionService {
-    static getRoles(){
-        let roles = {
+    constructor(){
+        this.roles = {
             'student': {
                 'showTaken': true,
                 'showAllTaken': false,
@@ -25,8 +25,10 @@ class PermissionService {
                 'addBook': false,
                 'addUser': true
             }
-        }
-
+        };
+    }
+    
+    getRoles(){
         return roles;
     }
 }

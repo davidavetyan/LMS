@@ -1,6 +1,7 @@
 class LMS {
     constructor() {
         this.umService = new UserManagement();
+        this.permissionService = new PermissionService();
         this.books = [];
         this.issuedBooks = [];
         this.takenBooks = [];
